@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width = device-width, initial-scale = 1">
+<title>DC Intranet</title>
+
+<!-- Use downloaded version of Bootstrap. You can style everything here to your liking. -->
+<!-- Download the Bootstrap source code here
+http://getbootstrap.com/getting-started/ -->
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link href="bootstrap-tour.min.css" rel="stylesheet">
+
+<style type="text/css">
+body {
+  font-size: 62.5%;
+  font-family: 'Open Sans Condensed', sans-serif;
+
+}
+.container{
+/*	font-size: 2em;
+*/}
+#nttLogo{
+  height: 100px;
+  width: 100px;
+}
+#websiteTitle{
+  font-size: 10em;
+  vertical-align: middle;
+  font-family: 'Pacifico', cursive;
+  padding-left: 15px;
+  color: #191970;
+}
+#websiteSlogan{
+  font-size: 5.4em;
+}
+/* Carousel Styling */
+.slide1{
+  background-image: url('http://octo.dc.gov/sites/default/files/styles/agency_home_featured_rotator/public/dc/sites/octo/featured_content/images/info-security-17x9slider.jpg');
+  height: 300px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.slide2{
+  background-image: url('http://octo.dc.gov/sites/default/files/styles/agency_home_featured_rotator/public/dc/sites/config/featured_content/images/MTL-2.jpg');
+  height: 300px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+}
+.slide3{
+  background-image: url('http://octo.dc.gov/sites/default/files/styles/agency_home_featured_rotator/public/dc/sites/connect/featured_content/images/ROTATOR-Computer%20Training%3AJob%20Readiness.jpg');
+  height: 300px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+}
+.carousel-caption h1{
+  font-size: 2.4em;
+  font-family: '';
+/*  padding-bottom: 2.4em;
+*/  padding: 1em;
+  background-color: #6091ba;
+/*  opacity: .7;
+*/  text-transform: uppercase;
+}
+.carousel-caption p{
+  font-size: 2em;
+  background-color: #000;
+}
+.carousel-caption{
+	    left: 5%;
+	    padding: 1em;
+	    right:1%;
+}
+.navbar{
+	font-size: 2em;
+	margin-bottom: 0;
+}
+.main-nav{
+	background-color: #6091ba;
+  font-size: 8px;
+}
+
+.main-nav .navbar-default {
+    background-color: #6091ba;
+    border-color: #6091ba;
+}
+.main-nav a {
+    color: #fff;
+   }
+header{
+	background-color: #2f506c;
+}
+
+.social-icons{
+	list-style: none;
+    padding: 10px 0;
+    margin-bottom: 0;
+}
+.social-icons li {
+    float: left;
+}
+.social-icons a {
+    display: inline-block;
+    /* background: #95b6d1; */
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    padding-top: 4px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    font-size: 18px;
+    margin-right: 10px;
+    float: left;
+}
+
+header .social-icons a {
+    background: #27435a !important;
+    transition: opacity 0.2s 0 ease;
+}
+header .social-icons a:hover {
+    background: #6091ba!important;
+    transition: opacity 0.2s 1s ease;
+}
+
+header .social-icons a .fa {
+    color: rgba(255, 255, 255, 0.4);
+}
+header .social-icons a .fa:hover {
+    color: #fff;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+}
+
+.header .social-icons a .fa:before {
+    font-size: 18px;
+    text-align: center;
+    padding: 0;
+}
+
+.main-nav .nav .nav-item, .navbar-default .navbar-nav>li>a{
+	text-transform: uppercase;
+}
+
+.main-nav .nav .nav-item.active > a {
+    background: #4678a1;
+    color: #fff;
+}
+.main-nav .nav .nav-item a{
+	color: #dce7f0;
+}
+.navbar-default .navbar-nav>li>a, 
+.navbar-default .navbar-nav>.open>a, 
+.navbar-default .navbar-nav>.open>a:focus, 
+.navbar-default .navbar-nav>.open>a:hover {
+	color: #fff;
+}
+.main-nav .nav .nav-item a:hover {
+    background: #4678a1;
+    color: #fff;
+}
+
+.navbar-default .navbar-nav>.open>a:focus{
+	background: #4678a1;
+}
+
+.navbar-default .navbar-nav>li>a:hover, 
+.navbar-default .navbar-nav>li>a:focus {
+	background-color: #3e6a8f;
+}
+
+.nav>li>a:hover, 
+.nav>li>a:focus, 
+.nav .open>a, 
+.nav .open>a:focus, 
+.nav .open>a:hover, 
+.dropdown-menu, 
+.navbar-default 
+.navbar-nav>li>a:hover{
+     background-color: #4678a1;
+         color: #fff;
+}
+/*.navbar-default .navbar-nav>.open>a{
+	background-color: #3e6a8f;
+}*/
+
+.navbar-default .navbar-nav>.open>a, 
+.navbar-default .navbar-nav>.open>a:hover{
+	background-color: #3e6a8f;
+}
+.dropdown-menu>li>a:hover{
+	background-color: #3e6a8f;
+}
+.dropdown-menu>li>a, .dropdown-menu>li>a:focus, 
+.dropdown-menu>li>a:hover{
+	color: #fff;
+	border-bottom: 1px solid #3e6a8f;
+}
+.dropdown-menu>li>a:hover{
+
+}
+.header-content{
+	padding: 30px 0;
+	font-size: 2.6em;
+}
+.header-content h1{
+	font-size: 1.3em;
+	margin: 0;
+}
+.header-content .menu-top {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+    float: right;
+}
+.header-content .menu-top li {
+    list-style: none;
+    float: left;
+    font-size: 11px;
+}
+.header-content .menu-top li.divider a {
+    border-right: 1px solid #c3c3c3;
+}
+.header-content .menu-top li a {
+    display: inline-block;
+    color: #777777;
+    padding: 0px 10px;
+}
+.header-content .contact .fa {
+    color: #6091ba;
+    margin-right: 8px}
+.header-content .contact p {
+    float: left;
+    margin-bottom: 0;   
+    font-size: 13px;
+}
+.header-content .contact p.phone {
+    margin-right: 30px;
+} 
+.header-content .contact .fa.fa-phone, 
+.header-content .contact .fa.fa-envelope {
+    font-size: 20px;
+    top: 2px;
+}
+.header-content .contact {
+    font-family: 'open sans', arial, sans-serif;
+    font-weight: 300;
+    color: #777777;
+}
+.header-content .contact p a {
+    color: #777777;
+}
+.navbar-default .navbar-toggle .icon-bar{
+	background-color: #888;
+}
+.dark{
+	background-color: #444;
+	color: #fff;
+	padding: 15px 30px;
+}
+.dark img{
+	width: 150px;
+	margin-top: 20px;
+}
+.well, .how-do-i{
+	font-size: 16px;
+/*	margin-top:25px;
+*/	background-color: #F5F5F5;
+	padding-left: 30px;
+}
+.events-block{
+  min-height: 300px;
+}
+.carousel-indicators{
+	margin-bottom: -40px;
+}
+.carousel-indicators li{
+	background-color: #ccc;
+}
+.carousel-indicators .active{
+	background-color: #3e6a8f;
+}
+.main-callout{
+	background-color: #f5f5f5;
+/*	margin-top: 30px;
+*/	font-size: 15px;
+
+}
+/*.main-callout button{
+	margin-top: 90px;
+}*/
+.main-callout.dark{
+	background-color: #444;
+	color: #fff;
+}
+.item .flex-caption {
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
+    color: #fff;
+    display: inline-block;
+    font-size: 14px;
+}
+ .flex-caption h3{
+ 	display: inline-block;
+    background: #6091ba;
+    margin-bottom: 5px;
+    padding: 10px 15px;
+    font-size: 18px;
+    text-transform: uppercase;
+ }
+  .flex-caption p{
+  	display: inline-block;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 5px 15px;
+    color: #fff;
+    font-size: 16px;
+}
+
+#theCarousel{
+/*  	margin-top: 15px;
+*/    margin-bottom: 30px;
+}
+.logo-overlay{
+	position: absolute;
+    width: 20px;
+    left: -45px;
+    top: 1px;
+/*    background: #2f506c;
+    background: linear-gradient(to right, #2f506c, #2f506c 80%, #fff);*/
+
+}
+.logo-overlay img{
+	width: 60px;
+	color: red;
+	transform: rotate(5deg);
+/*	 -webkit-filter: drop-shadow(5px 5px 5px #222);
+  filter: drop-shadow(5px 5px 5px #222);*/
+
+}
+.logo img{
+	width: 100px;
+}
+.logo-octo img{
+	width: 50px;
+	opacity: 1;
+}
+.secondary-callout{
+	font-size: 15px;
+	background: #F5F5F5;
+	margin-top: 20px;
+}
+.secondary-callout h3{
+	    border-top: 2px solid #6091BA;
+    margin-top: 0;
+    padding-top: 10px;
+
+}
+.how-do-i {
+/*	border-left:1px solid #ccc;
+*/	/*padding-bottom: 127px;
+	margin-bottom: -100px;*/
+	overflow: hidden;
+/*	background: linear-gradient(to bottom, #F5F5F5, #F5F5F5 20%, #fff);
+*/	background-color: #6091ba;
+    min-height: 237px;
+}
+.main-feature-section{
+/*	background-color: #6091ba;
+*/overflow: hidden;
+}
+.how-do-i a{
+	color: #fff
+}
+.how-do-i  h3{
+	color: #fff;
+	font-weight: bold;
+}
+.how-do-i .glyphicon{
+  float: right;
+  padding-right: 10px;
+}
+.main-feature-section{
+	overflow: normal;
+}
+.main-callout .glyphicon-certificate{
+  position: absolute;
+  top:15px;
+  left: 9px;
+}
+.secondary-callout .glyphicon{
+  float: right;
+  color: #6091BA;
+}
+.header-content .glyphicon{
+  color: #6091BA;
+
+}
+.octologo img {
+    width: 50px;
+    position: absolute;
+    top: -10px;
+}
+.contact{
+  margin-top: 10px;
+}
+.feature-banner{
+    width: 220px;
+    background: #6091BA;
+    border: 3px solid #6091BA;
+    height: 34px;
+    position: absolute;
+    transform: rotate(-25deg);
+    left: -39px;
+}
+.feature-banner:before{
+   content: " FEATURED STAFF";
+   padding-left: 35px;
+   font-size: 18px;
+}
+#tour .glyphicon{
+  background-color: #2f506c;
+  border-radius: 20px;
+  height: 18px;
+  width: 19px;
+  top:-1px;
+}
+.glyphicon-play:before {
+    margin-left: 4px;
+}
+.menu-top a{
+  font-size: 14px;
+}
+.event-item {
+    position: relative;
+    padding-left: 55px;
+    border-bottom: 1px solid #e8e8e8;
+    padding-bottom: 10px;
+    font-size: 16px;
+}
+.events a{
+  font-size: 18px;
+}
+.date-label .month {
+    background: #6091ba;
+    color: #fff;
+    display: block;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+.event-item .date-label {
+    background: #fff;
+    position: absolute;
+    left: 0;
+}
+.date-label .date-number {
+    clear: left;
+    display: block;
+    padding-top: 5px;
+    font-size: 15px;
+    font-family: 'open sans', arial, sans-serif;
+    font-weight: 500;
+}
+.date-label {
+    background: #f5f5f5;
+    display: inline-block;
+    width: 40px;
+    height: 50px;
+    text-align: center;
+    font-size: 13px;
+}
+.navbar-header .navbar-toggle{
+  background-color: #f5f5f5;
+}
+</style>
+</head>
+<body>
+<!--
+<div class="container">
+  <div class="jumbotron">
+  <img src="ntt-logo.png" id="nttLogo" alt="New Think Tank Logo">
+  <span id="websiteTitle">New Think Tank</span>
+  <p id="websiteSlogan">Video Tutorials on just about Anything</p>
+  </div>
+</div>
+-->
+<header>
+<!-- Collapsible Navigation Bar -->
+	<div class="container">
+
+		<!-- .navbar-fixed-top, or .navbar-fixed-bottom can be added to keep the nav bar fixed on the screen -->
+		<nav class="navbar">
+			<div class="container-fluid">
+
+			    	<!-- Brand and toggle get grouped for better mobile display -->
+			    <div class="navbar-header">
+
+				      <!-- Button that toggles the navbar on and off on small screens -->
+				     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
+
+				      <!-- Hides information from screen readers -->
+				        <span class="sr-only"></span>
+
+				        <!-- Draws 3 bars in navbar button when in small mode -->
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				      </button>
+
+			      <!-- You'll have to add padding in your image on the top and right of a few pixels (CSS Styling will break the navbar) -->
+			     
+			     		<ul class="social-icons">
+			             	<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+			                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+			                <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+			                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+			                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>         
+			                <li class="row-end"><a href="#"><i class="fa fa-rss"></i></a></li>             
+			            </ul>
+			            
+<!--             <div class="right">Alets:......</div>       
+ -->			    </div>
+
+			    <!-- Collect the nav links, forms, and other content for toggling -->
+			    <div class="collapse navbar-collapse" id="">
+			      <!-- navbar-left will move the search to the left -->
+			      <form class="navbar-form navbar-right" role="search">
+			        <div class="form-group">
+			          <input type="text" class="form-control" placeholder="Search">
+			        </div>
+			        <button type="submit" class="btn btn-default">Submit</button>
+			      </form>
+			    </div><!-- /.navbar-collapse -->
+
+			</div><!-- /.container-fluid -->
+		</nav>
+	</div>
+</header>
+<br>
+
+<div class="container header-content">
+<nav class="navbar">
+<div class="row">
+<div class="col-xs-6 col-lg-2 col-lg-offset-1">
+	<div class="logo-overlay"><img src="https://navandu.com/sites/default/files/n.png"></div>
+ <a class="logo" href="#"><img src="http://dc.gov/sites/default/files/dc/dcgov_logo.jpg"></a>
+ </div>
+<!-- well surrounds the text with a rounded border and gray background. The size can be changed with well-sm or well-lg -->
+<div class="col-xs-6 col-lg-4" id="start">
+	<h1>Welcome to DC's Intranet</h1>
+
+
+</div>
+
+<div class="info col-lg-4 col-md-8 col-sm-8">
+                    <ul class="menu-top navbar-right hidden-xs">
+                        <li class="divider"><span class="glyphicon glyphicon-home"></span><a href="index.html">Home</a></li>
+                        <li class="divider"><a href="faq.html">FAQ</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="#" class="octologo"><img src="http://octo.dc.gov/sites/default/files/styles/callout_interior_graphic/public/dc/sites/octo/agency_content/images/OCTO-logo_Lead.png"></a></li>
+                    </ul><!--//menu-top-->
+                    
+                    <div class="contact pull-right">
+                        <p class="phone"><i class="fa fa-phone"></i>OCTO Help line 202 727-4567</p> 
+                        <p class="email"><i class="fa fa-envelope"></i><a href="#">octohelps@dc.gov</a></p>
+                    </div><!--//contact-->
+               <!--  <div class="logo-octo"><img src="http://octo.dc.gov/sites/default/files/styles/callout_interior_graphic/public/dc/sites/octo/agency_content/images/OCTO-logo_Lead.png?itok=gQK68gWL"></div> -->
+                </div>
+</div>
+</nav>
+</div>
+
+
+
+<div class="main-nav navigation">
+<!-- Collapsible Navigation Bar -->
+<div class="container">
+
+<!-- .navbar-fixed-top, or .navbar-fixed-bottom can be added to keep the nav bar fixed on the screen -->
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+
+      <!-- Button that toggles the navbar on and off on small screens -->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+
+      <!-- Hides information from screen readers -->
+        <span class="sr-only"></span>
+
+        <!-- Draws 3 bars in navbar button when in small mode -->
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <!-- You'll have to add padding in your image on the top and right of a few pixels (CSS Styling will break the navbar) -->
+
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="nav-item active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+        <li><a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">My Government<span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            <li><a href="#">Mission</a></li>
+            <li><a href="#">Staff</a></li>
+            <li><a href="#">Organization Chart</a></li>
+            <li><a href="#">Meet the CTO</a></li>
+         </ul>
+         </li>
+          <li class="nav-item"><a href="#" class="dropdown-toggle" data-toggle="dropdown">HR Information <span class="sr-only">(current)</span><span class="caret"></span></a>
+          	<ul class="dropdown-menu">
+            <li><a href="#">Human Resources</a></li>
+            <li><a href="#">Benefits & Pay</a></li>
+            <li><a href="#">Employee Info</a></li>
+            <li><a href="#">Employee Resource</a></li>
+         </ul>
+          </li>
+
+           <li class="nav-item"><a href="#" class="dropdown-toggle" data-toggle="dropdown">News <span class="sr-only">(current)</span><span class="caret"></span></a>
+           	<ul class="dropdown-menu">
+	            <li><a href="#">News & Events</a></li>
+	            <li><a href="#">OCTO Bits</a></li>
+	            <li><a href="#">Latest Staff News</a></li>
+         </ul>
+           </li>
+<!--            <li class="nav-item"><a href="#">Agencies<span class="sr-only">(current)</span></a></li>
+ -->           <li class="nav-item"><a href="#">Directory<span class="sr-only">(current)</span></a></li>  
+            <li class="nav-item"><a href="#">Support Services <span class="sr-only">(current)</span></a></li> 
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contact Us <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Email</a></li>
+            <li><a href="#">Phone</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Open Remedy Ticket</a></li>
+          </ul>
+        </li>
+         <li class="nav-item"><a href="#">Policy<span class="sr-only">(current)</span></a></li>  
+      </ul>
+
+       <ul class="nav navbar-nav navbar-right">
+          <li><a href="#" id="tour">Take the tour <span class="glyphicon glyphicon-play"></span></a></li>
+          <li></li>
+       </ul>
+      
+  </div><!-- /.container-fluid -->
+</nav>
+</div>
+</div>
+<br>
+
+<div class="container">
+
+
+<div class=" events-block col-lg-3">
+   <a class="twitter-timeline" href="https://twitter.com/MayorBowser" data-widget-id="550302978453032960">Tweets by @MayorBowser</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</div>
+<!-- Carousel -->
+<!-- Surround everything with a div with the class carousel slide -->
+<div id="theCarousel" class="carousel slide col-lg-5" data-ride="carousel">
+
+  <!-- Define how many slides to put in the carousel -->
+  <ol class="carousel-indicators">
+    <li data-target="#theCarousel" data-slide-to="0" class="active"> </li >
+    <li data-target="#theCarousel" data-slide-to="1"> </li>
+    <li data-target ="#theCarousel" data-slide-to="2"> </li>
+    <li data-target ="#theCarousel" data-slide-to="3"> </li>
+  </ol >
+
+  <!-- Define the text to place over the image -->
+  <div class="carousel-inner">
+    <div class="item active">
+  <div class="slide4"><iframe width="100%" height="300px" src="https://www.youtube.com/embed/Qz0RE3V6wiA" frameborder="0" allowfullscreen></iframe> </div>
+  <!-- <div class="flex-caption">
+  <h3>Mayor Bowser Announces Open Data Initiative</h3><br />
+  <p>Mayor Muriel Bowser announces a groundbreaking new Open Data initiative and announces Archana Vemulapalli as the new Chief Technology Officer for the District of Columbia.</p>
+  </div> -->
+  </div>
+
+    <div class="item" >
+    <div class ="slide1"></div>
+    <div class="flex-caption">
+      <h3>Cybersecurity</h3><br />
+      <p>Subscribe to the vulnerability feed summarizing the most frequent, high-impact security incidents currently being reported to the US-CERT.</p>
+<!--       <p><a href="#" class="btn btn-primary btn-sm">Get them Now</a></p>
+ -->    </div>
+  </div>
+  
+  <div class="item">
+  <div class="slide2"></div>
+  <div class="flex-caption">
+    <h3>Mobile Tech Lab</h3><br />
+    <p>Connect.DC is bringing the power of technology to neighborhoods across the District.</p>
+  </div>
+  </div>
+  
+  <div class="item">
+  <div class="slide3"></div>
+  <div class="flex-caption">
+  <h3>Free Technology Training Classes</h3><br />
+  <p>Connect.DC is partnering with Byte Back to provide free computer training to District residents and help them find jobs.</p>
+  </div>
+  </div>
+
+  
+
+
+  </div>
+
+  <!-- Set the actions to take when the arrows are clicked -->
+  <a class="left carousel-control" href="#theCarousel" data-slide="prev">
+  <span class="glyphicon glyphicon-chevron-left"> </span>
+  </a>
+  <a class="right carousel-control" href="#theCarousel" data-slide="next">
+  <span class="glyphicon glyphicon-chevron-right"></span>
+  </a>
+  </div>
+
+  <div class=" events-block col-lg-4">
+
+                    <section class="events">
+                        <h2 class="section-heading text-highlight"><span class="line">Events</span></h2>
+                        <div class="section-content">
+                            <div class="event-item">
+                                <p class="date-label">
+                                    <span class="month">JUN</span>
+                                    <span class="date-number">18</span>
+                                </p>
+                                <div class="details">
+                                    <h4 class="title">OCTO All Hands Meeting</h4>
+                                    <p class="time"><i class="fa fa-clock-o"></i>10:00am - 12:00pm</p>
+                                    <p class="location"><i class="fa fa-map-marker"></i>200 I Street, 5th Flr.</p>                            
+                                </div><!--//details-->
+                            </div><!--event-item-->  
+                            <div class="event-item">
+                                <p class="date-label">
+                                    <span class="month">AUG</span>
+                                    <span class="date-number">06</span>
+                                </p>
+                                <div class="details">
+                                    <h4 class="title">OCTO Picnic</h4>
+                                    <p class="time"><i class="fa fa-clock-o"></i>11:00am - 5:00pm</p>
+                                    <p class="location"><i class="fa fa-map-marker"></i>Anacostia Park</p>                            
+                                </div><!--//details-->
+                            </div><!--event-item-->
+                           
+                            
+                            <a class="read-more" href="#">All events<i class="fa fa-chevron-right"></i></a>
+                        </div><!--//section-content-->
+                    </section><!--//events-->
+    
+  </div>
+
+</div>
+
+
+
+<div class="container main-feature-section">
+	<div class="row">
+
+
+		<div class="container main-callout dark col-lg-8 well">
+			<div class="row">
+				<!-- well surrounds the text with a rounded border and gray background. The size can be changed with well-sm or well-lg -->
+		<!-- 		<div class="well well-sm">
+
+		 -->			
+		 			<div class="col-lg-3"><div class="feature-banner"></div><!--span class="glyphicon glyphicon-certificate"></span--><img src="http://statescoop.com/statescoop50/2016/vote/images/nominees/state-up-and-comer/Vemulapalli_Archana-BW.jpg"></div>
+		 			<div class="col-lg-8">
+						<h3> “Up and Comers of the Year” Archana Vemulapalli</h3>
+						<p>CTO, District of Columbia</p>
+
+						<p> Mayor Muriel Bowser tapped Archana Vemulapalli as her nominee for the chief technology officer post in January, and since then, she's been working to collect feedback and implement the district's new open data policy, as well as developing her own roadmap of the district's IT future.</p> <a href="http://statescoop.com/statescoop50/2016/vote/#state-up-&-comer"><button type="button" class="btn btn-lg btn-primary btn-cta">Read More</button></a>
+					</div>
+					
+		<!-- 		</div>
+		 -->	</div>
+		</div>
+	
+
+		<div class="container how-do-i col-lg-4">
+			<div class="row">
+				<div class="" id="how-do-i">
+					<h3>HOW DO I?<span class="glyphicon glyphicon-check"></span></h3>
+					<ul>
+						<li><a href="#">Open a Remedy Ticket</a></li>
+						<li><a href="#">Find my...</a></li>
+            <li><a href="#">Getting Around DC</a></li>
+            <li><a href="#">Baseball Schedule</a></li>
+            <li><a href="#">Parking</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="container secondary-callout">
+	<div class="row">
+		<!-- well surrounds the text with a rounded border and gray background. The size can be changed with well-sm or well-lg -->
+<!-- 		<div class="well well-sm">
+
+ -->			
+ 		
+			 <div class="col-lg-3" id="hr">
+						<h3>Human Resources <span class="glyphicon glyphicon-user right"></span></h3>
+						<ul>
+							<li><a id="HR Info" href="http://www.dcop.in.dc.gov" name="HR Info">HR Information</a></li>
+							<li><a href="http://www.dcop.in.dc.gov/dcop/cwp/view.asp?a=1134&amp;q=441066">HR Forms On-Demand</a></li>
+				            <li><a href="http://dchr.dc.gov/page/employment-opportunities-new">District Government Jobs</a></li>
+				            <li><a href="https://pshcm.dc.gov/psp/hcmprd/?cmd=login&amp;languageCd=ENG&amp;">Time/Performance/Benefits (PeopleSoft)</a></li>
+			            </ul>
+			</div>
+
+			<div class="col-lg-3" id="services">
+				<h3>Email and Services <span class="glyphicon glyphicon-envelope"></span></h3>
+				<ul>
+					<li><a title="Outlook Web Access" href="http://mail.dc.gov">Outlook Web Access (Email)</a></li>
+					<li><a title="OCTO Services Status" href="outage.html">OCTO Services Status</a></li>
+	            	<li><a href="https://app.onelogin.com/trust/saml2/http-post/sso/418213" title="OCTOHelps Self-Service System (formerly RemedyForce)">OCTOHelps Self-Service System (formerly RemedyForce)</a> - (<a href="http://octo.in.dc.gov/page/remedyforce-self-service-need-help-more-info" title="Need help?">Need help?</a>)</li>
+	            	<li><a href="http://itremote.dc.gov/" title="IT Remote">IT Remote</a><br><a href="http://telephonedirectory.in.dc.gov/frameset.asp?nav=all" title="Telephone Directory">Telephone Directory</a></li>
+	            	<li><a href="https://dcwebforms.in.dc.gov/idir" title="DC Government Enterprise Directory">DC Government Enterprise Directory</a></li>
+	            	<li><a href="https://smartdgs.dc.gov:8443/archibus/login.axvw" title="Facility Maintenance Requests">Facility Maintenance Requests</a></li>
+	            	<li><a href="https://smartdgs.dc.gov:8443/archibus/login.axvw" title="Property User Tracking System (PUTS)">Property User Tracking System (PUTS)</a></li>
+	            	<li><a href="https://efb.dc.gov/" title="Front Burner Reporting">Front Burner Reporting</a></li>
+            	</ul>
+				
+			</div>
+			<div class="col-lg-3" id="applications">
+			<h3>Applications <span class="glyphicon glyphicon-cog"></span></h3>
+			<ul>
+				<li><a title="Documents" href="http://docs.dc.gov">Google Docs</a></li>
+                <li><a title="PASS" href="https://pass.in.dc.gov/Buyer/Main">PASS</a> (202) 727-8700</li>
+                <li><a title="PMP" href="https://pshcm.dc.gov">Peoplesoft (From Work)</a>, <a title="PMP" href="https://ess.dc.gov/">Peoplesoft (From Home)</a></li>
+                <li><a title="QuickBase" href="http://octo.quickbase.com">QuickBase</a></li>
+                <li><a title="TrackDC" href="http://track.dc.gov">TrackDC</a></li>          
+                <!--a title="VPN Log In, pinsafe" href="http://vpndc.dc.gov/pinsafe">VPN Log In (PINsafe)</a><br-->
+				<li><a href="http://octo.dc.gov/page/vpn-agency-login-information" title="VPN Log In">VPN Log In</a></li>
+			</ul>
+				
+			</div>
+
+			<div class="col-lg-3" id="procurement">
+			<h3>Procurement <span class="glyphicon glyphicon-list-alt"></span></h3>
+				<ul>
+					<li><a href="https://pass.in.dc.gov/Buyer/Main">Procurement Automated Support System (PASS)</a></li>
+		            <li><a href="http://wiki.in.dc.gov/index.php/PASS">PASS wiki page</a></li>
+		            <li><a href="http://www.asmp.in.dc.gov/asmp/cwp/view.asp?a=1191&amp;q=485607">Training: Buyer and Invoice</a></li>
+		            <li><a href="http://www.asmp.in.dc.gov/asmp/cwp/view.asp?a=1191&amp;q=487791">Training: Analysis</a></li>
+		            <li><a href="http://emou.octo.in.dc.gov/" title="eMOU">eMOU</a></li>
+	            </ul>
+			</div>
+		</div>
+</div>
+
+
+
+
+<!-- <div class="container well well-dark">
+	<div class="row">
+	<h1 class="section-heading">Why College Green</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed bibendum orci eget nulla mattis, quis viverra tellus porta. Donec vitae neque ut velit eleifend commodo. Maecenas turpis odio, placerat eu lorem ut, suscipit commodo augue.  </p>  
+
+	</div>
+</div> -->
+    <div class="container main-callout dark col-lg-12">
+      <a href="#">&nbsp;</a>
+    <!--   <a class="twitter-timeline" href="https://twitter.com/MayorBowser" data-widget-id="550302978453032960" data-tweet-limit="1">Tweets by @MayorBowser</a> -->
+<script>//!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+    </div>
+
+       <header>
+<!-- Collapsible Navigation Bar -->
+  <div class="container">
+
+    <!-- .navbar-fixed-top, or .navbar-fixed-bottom can be added to keep the nav bar fixed on the screen -->
+    <nav class="navbar right">
+      <div class="container-fluid">
+
+            <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+
+              <!-- Button that toggles the navbar on and off on small screens -->
+             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
+
+              <!-- Hides information from screen readers -->
+                <span class="sr-only"></span>
+
+                <!-- Draws 3 bars in navbar button when in small mode -->
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+            <!-- You'll have to add padding in your image on the top and right of a few pixels (CSS Styling will break the navbar) -->
+           
+              <ul class="social-icons">
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                      <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                      <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+                      <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                      <li><a href="#"><i class="fa fa-google-plus"></i></a></li>         
+                      <li class="row-end"><a href="#"><i class="fa fa-rss"></i></a></li>             
+                  </ul>
+                  
+          </div>
+
+          
+
+      </div><!-- /.container-fluid -->
+    </nav>
+  </div>
+</header>         
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<!-- Use downloaded version of Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="bootstrap-tour.min.js"></script>
+<script>
+// Instance the tour
+
+$("#tour").click( function() { 
+var tour = new Tour({
+  debug: false,
+  backdrop: true,
+  steps: [
+  {
+    element: "#start",
+    title: "Welcome to your new DC Intranet",
+    content: "We will walk through some features you may find interesting"
+  },
+  {
+    element: "#how-do-i",
+    title: "Take advantage of Quick links",
+    content: "Go to remedy.dc.gov"
+  },
+  {
+    element: "#hr",
+    title: "HR Information",
+    content: "Select this link to go to Human Resource content"
+  }
+]});
+
+// // Initialize the tour
+// tour.init();
+
+// // Start the tour
+// tour.start();
+
+// Force initialize the tour 
+tour.init(true); 
+
+// Force start the tour 
+tour.start();
+
+});
+
+</script>
+</body>
+</html>
