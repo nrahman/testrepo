@@ -1,0 +1,179 @@
+{#
+/**
+ * @file
+ * Theme override for the Hero Block content.
+ *
+ * Available variables:
+ * - content: The block content with all fields.
+ * - content.field_hero_layout: Layout selection (full_width_overlay, text_left_image_right, image_left_text_right)
+ * - content.field_hero_heading: The heading text
+ * - content.field_hero_subheading: The subheading text
+ * - content.field_hero_image: The hero image
+ * - content.field_hero_button_1: Primary button (link field)
+ * - content.field_hero_button_2: Secondary button (link field)
+ *
+ * Layout Options:
+ * 1. full_width_overlay: Full-width hero image with centered text overlay
+ * 2. text_left_image_right: Split layout with text on left, image on right
+ * 3. image_left_text_right: Split layout with image on left, text on right
+ *
+ * @see template_preprocess_block_content()
+ */
+#}
+
+{# Get the layout value #}
+{% set layout = content.field_hero_layout[0]['#markup']|default('full_width_overlay') %}
+
+{# Normalize the layout value (remove HTML and trim) #}
+{% set layout = layout|striptags|trim|lower|replace({' ': '_', '/': '_'}) %}
+
+{# Map display values to machine names #}
+{% if 'full' in layout %}
+  {% set layout = 'full_width_overlay' %}
+{% elseif 'text' in layout and 'left' in layout %}
+  {% set layout = 'text_left_image_right' %}
+{% elseif 'image' in layout and 'left' in layout %}
+  {% set layout = 'image_left_text_right' %}
+{% endif %}
+
+{# Layout CSS class mapping #}
+{% set layout_classes = {
+  'full_width_overlay': 'hero--full-width-overlay',
+  'text_left_image_right': 'hero--text-left-image-right',
+  'image_left_text_right': 'hero--image-left-text-right',
+} %}
+
+{% set layout_class = layout_classes[layout]|default('hero--full-width-overlay') %}
+
+{# Get field values #}
+{% set heading = content.field_hero_heading[0]['#context']['value']|default('') %}
+{% set subheading = content.field_hero_subheading[0]['#context']['value']|default('') %}
+
+{# Get image URL and alt #}
+{% set image_url = file_url(content.field_hero_image[0]['#item'].entity.uri.value)|default('') %}
+{% set image_alt = content.field_hero_image[0]['#item'].alt|default('') %}
+
+{# Get button 1 data #}
+{% set button_1_title = content.field_hero_button_1[0]['#title']|default('') %}
+{% set button_1_url = content.field_hero_button_1[0]['#url']|default('') %}
+
+{# Get button 2 data #}
+{% set button_2_title = content.field_hero_button_2[0]['#title']|default('') %}
+{% set button_2_url = content.field_hero_button_2[0]['#url']|default('') %}
+
+<section{{ attributes.addClass('hero', layout_class) }}>
+  {% if layout == 'full_width_overlay' %}
+    {# ============================================
+       LAYOUT 1: Full Width Overlay
+       ============================================ #}
+    <div class="hero__background" style="background-image: url('{{ image_url }}');">
+      <div class="hero__overlay"></div>
+      <div class="hero__container">
+        <div class="hero__content hero__content--centered">
+          {% if heading %}
+            <h1 class="hero__heading">{{ heading }}</h1>
+          {% endif %}
+
+          {% if subheading %}
+            <p class="hero__subheading">{{ subheading }}</p>
+          {% endif %}
+
+          {% if button_1_title or button_2_title %}
+            <div class="hero__buttons">
+              {% if button_1_title and button_1_url %}
+                <a href="{{ button_1_url }}" class="hero__button hero__button--primary">
+                  {{ button_1_title }}
+                </a>
+              {% endif %}
+              {% if button_2_title and button_2_url %}
+                <a href="{{ button_2_url }}" class="hero__button hero__button--secondary">
+                  {{ button_2_title }}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  {% elseif layout == 'text_left_image_right' %}
+    {# ============================================
+       LAYOUT 2: Text Left / Image Right
+       ============================================ #}
+    <div class="hero__container">
+      <div class="hero__row">
+        <div class="hero__column hero__column--text">
+          <div class="hero__content">
+            {% if heading %}
+              <h1 class="hero__heading">{{ heading }}</h1>
+            {% endif %}
+
+            {% if subheading %}
+              <p class="hero__subheading">{{ subheading }}</p>
+            {% endif %}
+
+            {% if button_1_title or button_2_title %}
+              <div class="hero__buttons">
+                {% if button_1_title and button_1_url %}
+                  <a href="{{ button_1_url }}" class="hero__button hero__button--primary">
+                    {{ button_1_title }}
+                  </a>
+                {% endif %}
+                {% if button_2_title and button_2_url %}
+                  <a href="{{ button_2_url }}" class="hero__button hero__button--secondary">
+                    {{ button_2_title }}
+                  </a>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="hero__column hero__column--image">
+          {% if image_url %}
+            <img src="{{ image_url }}" alt="{{ image_alt }}" class="hero__image" loading="lazy">
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  {% elseif layout == 'image_left_text_right' %}
+    {# ============================================
+       LAYOUT 3: Image Left / Text Right
+       ============================================ #}
+    <div class="hero__container">
+      <div class="hero__row">
+        <div class="hero__column hero__column--image">
+          {% if image_url %}
+            <img src="{{ image_url }}" alt="{{ image_alt }}" class="hero__image" loading="lazy">
+          {% endif %}
+        </div>
+        <div class="hero__column hero__column--text">
+          <div class="hero__content">
+            {% if heading %}
+              <h1 class="hero__heading">{{ heading }}</h1>
+            {% endif %}
+
+            {% if subheading %}
+              <p class="hero__subheading">{{ subheading }}</p>
+            {% endif %}
+
+            {% if button_1_title or button_2_title %}
+              <div class="hero__buttons">
+                {% if button_1_title and button_1_url %}
+                  <a href="{{ button_1_url }}" class="hero__button hero__button--primary">
+                    {{ button_1_title }}
+                  </a>
+                {% endif %}
+                {% if button_2_title and button_2_url %}
+                  <a href="{{ button_2_url }}" class="hero__button hero__button--secondary">
+                    {{ button_2_title }}
+                  </a>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</section>

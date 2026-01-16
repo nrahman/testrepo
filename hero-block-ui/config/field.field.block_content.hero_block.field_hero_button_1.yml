@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.hero_block
+    - field.storage.block_content.field_hero_button_1
+  module:
+    - link
+id: block_content.hero_block.field_hero_button_1
+field_name: field_hero_button_1
+entity_type: block_content
+bundle: hero_block
+label: 'Primary Button'
+description: 'The primary call-to-action button (optional).'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.hero_block
+    - field.storage.block_content.field_hero_layout
+  module:
+    - options
+id: block_content.hero_block.field_hero_layout
+field_name: field_hero_layout
+entity_type: block_content
+bundle: hero_block
+label: Layout
+description: 'Select the hero layout style.'
+required: true
+translatable: false
+default_value:
+  -
+    value: full_width_overlay
+default_value_callback: ''
+settings: {  }
+field_type: list_string

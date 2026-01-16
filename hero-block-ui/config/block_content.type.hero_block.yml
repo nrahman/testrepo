@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: hero_block
+label: 'Hero Block'
+revision: 1
+description: 'A hero block with 3 layout options: full-width overlay, text-left/image-right, and image-left/text-right. Includes heading, subheading, image, and two CTA buttons.'

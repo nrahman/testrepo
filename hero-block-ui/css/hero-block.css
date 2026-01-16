@@ -1,0 +1,468 @@
+/**
+ * @file
+ * Hero Block Styles (UI-Based Custom Block)
+ *
+ * Add this CSS to your theme's library or global styles.
+ *
+ * Styles for the Hero Block with 3 layout options:
+ * 1. Full Width Overlay - Background image with centered text overlay
+ * 2. Text Left / Image Right - Split layout
+ * 3. Image Left / Text Right - Split layout (reversed)
+ */
+
+/* ==========================================================================
+   CSS Custom Properties (Variables)
+   ========================================================================== */
+
+:root {
+  /* Colors - Customize these for your brand */
+  --hero-primary: #2563eb;
+  --hero-primary-hover: #1d4ed8;
+  --hero-secondary: #ffffff;
+  --hero-text-dark: #1f2937;
+  --hero-text-light: #ffffff;
+  --hero-text-muted: #6b7280;
+  --hero-overlay: rgba(0, 0, 0, 0.55);
+  --hero-bg-light: #f9fafb;
+  --hero-bg-split: #f3f4f6;
+
+  /* Spacing */
+  --hero-spacing-xs: 0.5rem;
+  --hero-spacing-sm: 1rem;
+  --hero-spacing-md: 1.5rem;
+  --hero-spacing-lg: 2.5rem;
+  --hero-spacing-xl: 4rem;
+  --hero-spacing-2xl: 6rem;
+
+  /* Layout */
+  --hero-max-width: 1280px;
+  --hero-content-max-width: 720px;
+
+  /* Typography */
+  --hero-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --hero-heading-size: clamp(2rem, 5vw, 3.5rem);
+  --hero-subheading-size: clamp(1rem, 2vw, 1.25rem);
+
+  /* Effects */
+  --hero-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --hero-border-radius: 8px;
+  --hero-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  --hero-shadow-hover: 0 25px 60px rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================================================
+   Hero Component Base Styles
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  font-family: var(--hero-font-family);
+  line-height: 1.6;
+}
+
+.hero__container {
+  max-width: var(--hero-max-width);
+  margin: 0 auto;
+  padding: 0 var(--hero-spacing-md);
+}
+
+.hero__heading {
+  font-size: var(--hero-heading-size);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 var(--hero-spacing-md);
+  letter-spacing: -0.02em;
+}
+
+.hero__subheading {
+  font-size: var(--hero-subheading-size);
+  line-height: 1.7;
+  margin: 0 0 var(--hero-spacing-lg);
+  font-weight: 400;
+}
+
+/* ==========================================================================
+   LAYOUT 1: Full Width Overlay
+   ========================================================================== */
+
+.hero--full-width-overlay .hero__background {
+  position: relative;
+  min-height: 600px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero--full-width-overlay .hero__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--hero-overlay);
+  z-index: 1;
+}
+
+.hero--full-width-overlay .hero__container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: var(--hero-spacing-2xl) var(--hero-spacing-md);
+}
+
+.hero--full-width-overlay .hero__content--centered {
+  text-align: center;
+  max-width: var(--hero-content-max-width);
+  margin: 0 auto;
+}
+
+.hero--full-width-overlay .hero__heading {
+  color: var(--hero-text-light);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hero--full-width-overlay .hero__subheading {
+  color: var(--hero-text-light);
+  opacity: 0.92;
+}
+
+.hero--full-width-overlay .hero__buttons {
+  justify-content: center;
+}
+
+/* ==========================================================================
+   LAYOUT 2 & 3: Split Layouts
+   ========================================================================== */
+
+.hero--text-left-image-right,
+.hero--image-left-text-right {
+  background-color: var(--hero-bg-split);
+}
+
+.hero--text-left-image-right .hero__container,
+.hero--image-left-text-right .hero__container {
+  padding: var(--hero-spacing-xl) var(--hero-spacing-md);
+}
+
+.hero__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--hero-spacing-xl);
+}
+
+.hero__column {
+  flex: 1 1 45%;
+  min-width: 300px;
+}
+
+.hero__column--text {
+  display: flex;
+  align-items: center;
+}
+
+.hero__column--image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Text Left Layout - Column Order */
+.hero--text-left-image-right .hero__column--text {
+  order: 1;
+}
+
+.hero--text-left-image-right .hero__column--image {
+  order: 2;
+}
+
+/* Image Left Layout - Column Order */
+.hero--image-left-text-right .hero__column--image {
+  order: 1;
+}
+
+.hero--image-left-text-right .hero__column--text {
+  order: 2;
+}
+
+/* Split Layout Content */
+.hero--text-left-image-right .hero__content,
+.hero--image-left-text-right .hero__content {
+  padding: var(--hero-spacing-md) 0;
+}
+
+.hero--text-left-image-right .hero__heading,
+.hero--image-left-text-right .hero__heading {
+  color: var(--hero-text-dark);
+}
+
+.hero--text-left-image-right .hero__subheading,
+.hero--image-left-text-right .hero__subheading {
+  color: var(--hero-text-muted);
+}
+
+/* Hero Image */
+.hero__image {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  border-radius: var(--hero-border-radius);
+  box-shadow: var(--hero-shadow);
+  transition: transform var(--hero-transition), box-shadow var(--hero-transition);
+}
+
+.hero__image:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--hero-shadow-hover);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.hero__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hero-spacing-sm);
+}
+
+.hero__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  text-decoration: none;
+  border-radius: var(--hero-border-radius);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--hero-transition);
+  min-width: 140px;
+}
+
+/* Primary Button */
+.hero__button--primary {
+  background-color: var(--hero-primary);
+  color: var(--hero-text-light);
+  border-color: var(--hero-primary);
+}
+
+.hero__button--primary:hover,
+.hero__button--primary:focus {
+  background-color: var(--hero-primary-hover);
+  border-color: var(--hero-primary-hover);
+  color: var(--hero-text-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+  text-decoration: none;
+}
+
+/* Secondary Button - Full Width Overlay */
+.hero--full-width-overlay .hero__button--secondary {
+  background-color: transparent;
+  color: var(--hero-text-light);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+.hero--full-width-overlay .hero__button--secondary:hover,
+.hero--full-width-overlay .hero__button--secondary:focus {
+  background-color: var(--hero-text-light);
+  color: var(--hero-text-dark);
+  border-color: var(--hero-text-light);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+/* Secondary Button - Split Layouts */
+.hero--text-left-image-right .hero__button--secondary,
+.hero--image-left-text-right .hero__button--secondary {
+  background-color: transparent;
+  color: var(--hero-primary);
+  border-color: var(--hero-primary);
+}
+
+.hero--text-left-image-right .hero__button--secondary:hover,
+.hero--text-left-image-right .hero__button--secondary:focus,
+.hero--image-left-text-right .hero__button--secondary:hover,
+.hero--image-left-text-right .hero__button--secondary:focus {
+  background-color: var(--hero-primary);
+  color: var(--hero-text-light);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .hero--full-width-overlay .hero__background {
+    min-height: 500px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  :root {
+    --hero-spacing-xl: 2.5rem;
+    --hero-spacing-2xl: 3.5rem;
+  }
+
+  .hero--full-width-overlay .hero__background {
+    min-height: 450px;
+  }
+
+  .hero__row {
+    flex-direction: column;
+    gap: var(--hero-spacing-lg);
+  }
+
+  .hero__column {
+    flex: 1 1 100%;
+    min-width: 100%;
+  }
+
+  /* On mobile, always show image first */
+  .hero--text-left-image-right .hero__column--text,
+  .hero--image-left-text-right .hero__column--text {
+    order: 2 !important;
+  }
+
+  .hero--text-left-image-right .hero__column--image,
+  .hero--image-left-text-right .hero__column--image {
+    order: 1 !important;
+  }
+
+  .hero--text-left-image-right .hero__content,
+  .hero--image-left-text-right .hero__content {
+    text-align: center;
+  }
+
+  .hero--text-left-image-right .hero__buttons,
+  .hero--image-left-text-right .hero__buttons {
+    justify-content: center;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .hero__buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero__button {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+
+.hero__button:focus {
+  outline: 3px solid rgba(37, 99, 235, 0.5);
+  outline-offset: 2px;
+}
+
+.hero__button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.hero__button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.5);
+  outline-offset: 2px;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero__button,
+  .hero__image {
+    transition: none;
+  }
+
+  .hero__button:hover,
+  .hero__image:hover {
+    transform: none;
+  }
+}
+
+/* High Contrast */
+@media (prefers-contrast: high) {
+  .hero--full-width-overlay .hero__overlay {
+    background: rgba(0, 0, 0, 0.75);
+  }
+
+  .hero__button {
+    border-width: 3px;
+  }
+}
+
+/* ==========================================================================
+   Animation (Entrance Effects)
+   ========================================================================== */
+
+@keyframes heroFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero--animated .hero__heading {
+  animation: heroFadeInUp 0.6s ease-out forwards;
+}
+
+.hero--animated .hero__subheading {
+  animation: heroFadeInUp 0.6s ease-out 0.15s forwards;
+  opacity: 0;
+}
+
+.hero--animated .hero__buttons {
+  animation: heroFadeInUp 0.6s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+.hero--animated .hero__image {
+  animation: heroFadeInUp 0.8s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+  .hero {
+    page-break-inside: avoid;
+  }
+
+  .hero--full-width-overlay .hero__overlay {
+    display: none;
+  }
+
+  .hero--full-width-overlay .hero__heading,
+  .hero--full-width-overlay .hero__subheading {
+    color: #000;
+    text-shadow: none;
+  }
+
+  .hero__button {
+    border: 1px solid #000 !important;
+    color: #000 !important;
+    background: none !important;
+  }
+}
