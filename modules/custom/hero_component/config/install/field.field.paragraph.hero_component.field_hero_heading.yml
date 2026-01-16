@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_hero_heading
+    - paragraphs.paragraphs_type.hero_component
+  enforced:
+    module:
+      - hero_component
+id: paragraph.hero_component.field_hero_heading
+field_name: field_hero_heading
+entity_type: paragraph
+bundle: hero_component
+label: 'Heading'
+description: 'The main heading text for the hero component.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

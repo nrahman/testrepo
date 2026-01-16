@@ -1,0 +1,81 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.hero_component.field_hero_button_1
+    - field.field.paragraph.hero_component.field_hero_button_2
+    - field.field.paragraph.hero_component.field_hero_heading
+    - field.field.paragraph.hero_component.field_hero_image
+    - field.field.paragraph.hero_component.field_hero_layout
+    - field.field.paragraph.hero_component.field_hero_subheading
+    - paragraphs.paragraphs_type.hero_component
+  module:
+    - image
+    - link
+    - options
+  enforced:
+    module:
+      - hero_component
+id: paragraph.hero_component.default
+targetEntityType: paragraph
+bundle: hero_component
+mode: default
+content:
+  field_hero_button_1:
+    type: link
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_hero_button_2:
+    type: link
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_hero_heading:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_hero_image:
+    type: image
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      image_style: wide
+      image_link: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+  field_hero_layout:
+    type: list_default
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_hero_subheading:
+    type: basic_string
+    weight: 2
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

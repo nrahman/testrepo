@@ -1,0 +1,143 @@
+{#
+/**
+ * @file
+ * Theme implementation for the Hero Component paragraph type.
+ *
+ * Available variables:
+ * - hero_layout: The selected layout option (full_width_overlay, text_left_image_right, image_left_text_right)
+ * - hero_layout_class: CSS class for the layout
+ * - hero_heading: The heading text
+ * - hero_subheading: The subheading text
+ * - hero_image_url: URL of the hero image
+ * - hero_image_alt: Alt text for the hero image
+ * - hero_button_1: Primary button array with 'url' and 'title' keys
+ * - hero_button_2: Secondary button array with 'url' and 'title' keys
+ *
+ * Layout Options:
+ * 1. full_width_overlay: Full-width hero image with text overlay
+ * 2. text_left_image_right: Split layout with text on left, image on right
+ * 3. image_left_text_right: Split layout with image on left, text on right
+ */
+#}
+
+{% set classes = [
+  'hero-component',
+  'paragraph',
+  'paragraph--type--' ~ paragraph.bundle|clean_class,
+  hero_layout_class,
+] %}
+
+<section{{ attributes.addClass(classes) }}>
+  {% if hero_layout == 'full_width_overlay' %}
+    {# Layout 1: Full Width Overlay #}
+    <div class="hero__full-width" style="background-image: url('{{ hero_image_url }}');">
+      <div class="hero__overlay"></div>
+      <div class="hero__container">
+        <div class="hero__content hero__content--centered">
+          {% if hero_heading %}
+            <h1 class="hero__heading">{{ hero_heading }}</h1>
+          {% endif %}
+
+          {% if hero_subheading %}
+            <p class="hero__subheading">{{ hero_subheading }}</p>
+          {% endif %}
+
+          {% if hero_button_1 or hero_button_2 %}
+            <div class="hero__buttons">
+              {% if hero_button_1 %}
+                <a href="{{ hero_button_1.url }}" class="hero__button hero__button--primary">
+                  {{ hero_button_1.title }}
+                </a>
+              {% endif %}
+              {% if hero_button_2 %}
+                <a href="{{ hero_button_2.url }}" class="hero__button hero__button--secondary">
+                  {{ hero_button_2.title }}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  {% elseif hero_layout == 'text_left_image_right' %}
+    {# Layout 2: Text Left / Image Right #}
+    <div class="hero__split">
+      <div class="hero__container">
+        <div class="hero__row">
+          <div class="hero__column hero__column--text">
+            <div class="hero__content">
+              {% if hero_heading %}
+                <h1 class="hero__heading">{{ hero_heading }}</h1>
+              {% endif %}
+
+              {% if hero_subheading %}
+                <p class="hero__subheading">{{ hero_subheading }}</p>
+              {% endif %}
+
+              {% if hero_button_1 or hero_button_2 %}
+                <div class="hero__buttons">
+                  {% if hero_button_1 %}
+                    <a href="{{ hero_button_1.url }}" class="hero__button hero__button--primary">
+                      {{ hero_button_1.title }}
+                    </a>
+                  {% endif %}
+                  {% if hero_button_2 %}
+                    <a href="{{ hero_button_2.url }}" class="hero__button hero__button--secondary">
+                      {{ hero_button_2.title }}
+                    </a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="hero__column hero__column--image">
+            {% if hero_image_url %}
+              <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}" class="hero__image" loading="lazy">
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  {% elseif hero_layout == 'image_left_text_right' %}
+    {# Layout 3: Image Left / Text Right #}
+    <div class="hero__split hero__split--reversed">
+      <div class="hero__container">
+        <div class="hero__row">
+          <div class="hero__column hero__column--image">
+            {% if hero_image_url %}
+              <img src="{{ hero_image_url }}" alt="{{ hero_image_alt }}" class="hero__image" loading="lazy">
+            {% endif %}
+          </div>
+          <div class="hero__column hero__column--text">
+            <div class="hero__content">
+              {% if hero_heading %}
+                <h1 class="hero__heading">{{ hero_heading }}</h1>
+              {% endif %}
+
+              {% if hero_subheading %}
+                <p class="hero__subheading">{{ hero_subheading }}</p>
+              {% endif %}
+
+              {% if hero_button_1 or hero_button_2 %}
+                <div class="hero__buttons">
+                  {% if hero_button_1 %}
+                    <a href="{{ hero_button_1.url }}" class="hero__button hero__button--primary">
+                      {{ hero_button_1.title }}
+                    </a>
+                  {% endif %}
+                  {% if hero_button_2 %}
+                    <a href="{{ hero_button_2.url }}" class="hero__button hero__button--secondary">
+                      {{ hero_button_2.title }}
+                    </a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</section>

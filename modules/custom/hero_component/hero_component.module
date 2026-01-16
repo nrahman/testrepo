@@ -1,0 +1,128 @@
+<?php
+
+/**
+ * @file
+ * Hero Component module file.
+ *
+ * Provides a hero component paragraph type with 3 layout options.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\file\Entity\File;
+use Drupal\media\Entity\Media;
+
+/**
+ * Implements hook_help().
+ */
+function hero_component_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.hero_component':
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides a hero component paragraph type with 3 layout options:') . '</p>';
+      $output .= '<ul>';
+      $output .= '<li>' . t('<strong>Full Width Overlay:</strong> Hero banner image with text overlayed on top') . '</li>';
+      $output .= '<li>' . t('<strong>Text Left / Image Right:</strong> Split layout with text content on the left') . '</li>';
+      $output .= '<li>' . t('<strong>Image Left / Text Right:</strong> Split layout with image on the left') . '</li>';
+      $output .= '</ul>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function hero_component_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__hero_component' => [
+      'base hook' => 'paragraph',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_paragraph() for hero_component paragraphs.
+ */
+function hero_component_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+
+  // Only process hero_component paragraphs.
+  if ($paragraph->bundle() !== 'hero_component') {
+    return;
+  }
+
+  // Get the layout option.
+  $layout = 'full_width_overlay';
+  if ($paragraph->hasField('field_hero_layout') && !$paragraph->get('field_hero_layout')->isEmpty()) {
+    $layout = $paragraph->get('field_hero_layout')->value;
+  }
+  $variables['hero_layout'] = $layout;
+
+  // Get heading.
+  $variables['hero_heading'] = '';
+  if ($paragraph->hasField('field_hero_heading') && !$paragraph->get('field_hero_heading')->isEmpty()) {
+    $variables['hero_heading'] = $paragraph->get('field_hero_heading')->value;
+  }
+
+  // Get subheading.
+  $variables['hero_subheading'] = '';
+  if ($paragraph->hasField('field_hero_subheading') && !$paragraph->get('field_hero_subheading')->isEmpty()) {
+    $variables['hero_subheading'] = $paragraph->get('field_hero_subheading')->value;
+  }
+
+  // Get button 1.
+  $variables['hero_button_1'] = NULL;
+  if ($paragraph->hasField('field_hero_button_1') && !$paragraph->get('field_hero_button_1')->isEmpty()) {
+    $link = $paragraph->get('field_hero_button_1')->first();
+    $variables['hero_button_1'] = [
+      'url' => $link->getUrl()->toString(),
+      'title' => $link->title ?: t('Learn More'),
+    ];
+  }
+
+  // Get button 2.
+  $variables['hero_button_2'] = NULL;
+  if ($paragraph->hasField('field_hero_button_2') && !$paragraph->get('field_hero_button_2')->isEmpty()) {
+    $link = $paragraph->get('field_hero_button_2')->first();
+    $variables['hero_button_2'] = [
+      'url' => $link->getUrl()->toString(),
+      'title' => $link->title ?: t('Contact Us'),
+    ];
+  }
+
+  // Get hero image URL.
+  $variables['hero_image_url'] = '';
+  $variables['hero_image_alt'] = '';
+  if ($paragraph->hasField('field_hero_image') && !$paragraph->get('field_hero_image')->isEmpty()) {
+    $image_field = $paragraph->get('field_hero_image')->first();
+
+    // Check if it's a media reference or direct file reference.
+    if ($image_field->entity instanceof Media) {
+      // Media entity reference.
+      $media = $image_field->entity;
+      if ($media->hasField('field_media_image') && !$media->get('field_media_image')->isEmpty()) {
+        $file = $media->get('field_media_image')->entity;
+        if ($file instanceof File) {
+          $variables['hero_image_url'] = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
+          $variables['hero_image_alt'] = $media->get('field_media_image')->alt ?? '';
+        }
+      }
+    }
+    elseif ($image_field->entity instanceof File) {
+      // Direct file reference.
+      $file = $image_field->entity;
+      $variables['hero_image_url'] = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
+      $variables['hero_image_alt'] = $image_field->alt ?? '';
+    }
+  }
+
+  // Add layout-specific CSS class.
+  $layout_classes = [
+    'full_width_overlay' => 'hero--full-width-overlay',
+    'text_left_image_right' => 'hero--text-left',
+    'image_left_text_right' => 'hero--image-left',
+  ];
+  $variables['hero_layout_class'] = $layout_classes[$layout] ?? 'hero--full-width-overlay';
+
+  // Attach library.
+  $variables['#attached']['library'][] = 'hero_component/hero_component';
+}

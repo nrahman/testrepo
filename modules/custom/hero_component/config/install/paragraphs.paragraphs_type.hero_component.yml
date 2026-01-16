@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - hero_component
+id: hero_component
+label: 'Hero Component'
+description: 'A hero component with 3 layout options: full-width overlay, text-left/image-right, and image-left/text-right.'
+icon_uuid: null
+behavior_plugins: {  }
