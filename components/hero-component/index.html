@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero Component - 3 Layout Options</title>
+  <link rel="stylesheet" href="css/hero-component.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Layout Switcher Demo -->
+  <div class="layout-switcher">
+    <h2>Hero Component Layouts</h2>
+    <div class="layout-buttons">
+      <button class="layout-btn active" data-layout="full-width-overlay">Full Width Overlay</button>
+      <button class="layout-btn" data-layout="text-left-image-right">Text Left / Image Right</button>
+      <button class="layout-btn" data-layout="image-left-text-right">Image Left / Text Right</button>
+    </div>
+  </div>
+
+  <!-- ============================================
+       LAYOUT 1: Full Width Overlay
+       ============================================ -->
+  <section class="hero hero--full-width-overlay" id="hero-full-width-overlay">
+    <div class="hero__background" style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80');">
+      <div class="hero__overlay"></div>
+      <div class="hero__container">
+        <div class="hero__content hero__content--centered">
+          <h1 class="hero__heading">Transform Your Digital Experience</h1>
+          <p class="hero__subheading">Discover innovative solutions that drive growth and engagement. Our platform helps businesses achieve their goals with cutting-edge technology.</p>
+          <div class="hero__buttons">
+            <a href="#" class="hero__button hero__button--primary">Get Started</a>
+            <a href="#" class="hero__button hero__button--secondary">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       LAYOUT 2: Text Left / Image Right
+       ============================================ -->
+  <section class="hero hero--text-left-image-right" id="hero-text-left-image-right" style="display: none;">
+    <div class="hero__container">
+      <div class="hero__row">
+        <div class="hero__column hero__column--text">
+          <div class="hero__content">
+            <h1 class="hero__heading">Build Something Amazing Together</h1>
+            <p class="hero__subheading">We partner with forward-thinking companies to create exceptional digital products. From concept to launch, we're with you every step of the way.</p>
+            <div class="hero__buttons">
+              <a href="#" class="hero__button hero__button--primary">Start Project</a>
+              <a href="#" class="hero__button hero__button--secondary">View Portfolio</a>
+            </div>
+          </div>
+        </div>
+        <div class="hero__column hero__column--image">
+          <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80" alt="Team collaboration" class="hero__image">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       LAYOUT 3: Image Left / Text Right
+       ============================================ -->
+  <section class="hero hero--image-left-text-right" id="hero-image-left-text-right" style="display: none;">
+    <div class="hero__container">
+      <div class="hero__row">
+        <div class="hero__column hero__column--image">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="Analytics dashboard" class="hero__image">
+        </div>
+        <div class="hero__column hero__column--text">
+          <div class="hero__content">
+            <h1 class="hero__heading">Data-Driven Insights for Growth</h1>
+            <p class="hero__subheading">Unlock the power of your data with our advanced analytics platform. Make informed decisions and stay ahead of the competition with real-time insights.</p>
+            <div class="hero__buttons">
+              <a href="#" class="hero__button hero__button--primary">Try Free Demo</a>
+              <a href="#" class="hero__button hero__button--secondary">See Pricing</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Usage Examples Section -->
+  <section class="usage-section">
+    <div class="usage-container">
+      <h2>How to Use This Component</h2>
+
+      <h3>1. Full Width Overlay</h3>
+      <pre><code>&lt;section class="hero hero--full-width-overlay"&gt;
+  &lt;div class="hero__background" style="background-image: url('your-image.jpg');"&gt;
+    &lt;div class="hero__overlay"&gt;&lt;/div&gt;
+    &lt;div class="hero__container"&gt;
+      &lt;div class="hero__content hero__content--centered"&gt;
+        &lt;h1 class="hero__heading"&gt;Your Heading&lt;/h1&gt;
+        &lt;p class="hero__subheading"&gt;Your subheading text&lt;/p&gt;
+        &lt;div class="hero__buttons"&gt;
+          &lt;a href="#" class="hero__button hero__button--primary"&gt;Button 1&lt;/a&gt;
+          &lt;a href="#" class="hero__button hero__button--secondary"&gt;Button 2&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+      <h3>2. Text Left / Image Right</h3>
+      <pre><code>&lt;section class="hero hero--text-left-image-right"&gt;
+  &lt;div class="hero__container"&gt;
+    &lt;div class="hero__row"&gt;
+      &lt;div class="hero__column hero__column--text"&gt;
+        &lt;div class="hero__content"&gt;
+          &lt;h1 class="hero__heading"&gt;Your Heading&lt;/h1&gt;
+          &lt;p class="hero__subheading"&gt;Your subheading text&lt;/p&gt;
+          &lt;div class="hero__buttons"&gt;
+            &lt;a href="#" class="hero__button hero__button--primary"&gt;Button 1&lt;/a&gt;
+            &lt;a href="#" class="hero__button hero__button--secondary"&gt;Button 2&lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="hero__column hero__column--image"&gt;
+        &lt;img src="your-image.jpg" alt="Description" class="hero__image"&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+      <h3>3. Image Left / Text Right</h3>
+      <pre><code>&lt;section class="hero hero--image-left-text-right"&gt;
+  &lt;div class="hero__container"&gt;
+    &lt;div class="hero__row"&gt;
+      &lt;div class="hero__column hero__column--image"&gt;
+        &lt;img src="your-image.jpg" alt="Description" class="hero__image"&gt;
+      &lt;/div&gt;
+      &lt;div class="hero__column hero__column--text"&gt;
+        &lt;div class="hero__content"&gt;
+          &lt;h1 class="hero__heading"&gt;Your Heading&lt;/h1&gt;
+          &lt;p class="hero__subheading"&gt;Your subheading text&lt;/p&gt;
+          &lt;div class="hero__buttons"&gt;
+            &lt;a href="#" class="hero__button hero__button--primary"&gt;Button 1&lt;/a&gt;
+            &lt;a href="#" class="hero__button hero__button--secondary"&gt;Button 2&lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+    </div>
+  </section>
+
+  <script src="js/hero-component.js"></script>
+</body>
+</html>
