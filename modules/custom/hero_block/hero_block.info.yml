@@ -1,0 +1,9 @@
+name: 'Hero Block'
+type: module
+description: 'Provides a custom hero block with 3 layout options: full-width overlay, text-left/image-right, and image-left/text-right.'
+package: Custom
+core_version_requirement: ^9 || ^10 || ^11
+dependencies:
+  - drupal:block
+  - drupal:file
+  - drupal:link

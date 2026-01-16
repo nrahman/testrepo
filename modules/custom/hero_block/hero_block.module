@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Hero Block module file.
+ *
+ * Provides a custom hero block with 3 layout options.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function hero_block_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.hero_block':
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides a custom hero block with 3 layout options:') . '</p>';
+      $output .= '<ul>';
+      $output .= '<li>' . t('<strong>Full Width Overlay:</strong> Hero banner image with text overlayed on top') . '</li>';
+      $output .= '<li>' . t('<strong>Text Left / Image Right:</strong> Split layout with text content on the left') . '</li>';
+      $output .= '<li>' . t('<strong>Image Left / Text Right:</strong> Split layout with image on the left') . '</li>';
+      $output .= '</ul>';
+      $output .= '<h3>' . t('Usage') . '</h3>';
+      $output .= '<p>' . t('Go to Structure > Block layout and place the "Hero Block" in your desired region.') . '</p>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function hero_block_theme($existing, $type, $theme, $path) {
+  return [
+    'hero_block' => [
+      'variables' => [
+        'hero_layout' => 'full_width_overlay',
+        'hero_layout_class' => 'hero--full-width-overlay',
+        'hero_heading' => NULL,
+        'hero_subheading' => NULL,
+        'hero_image_url' => NULL,
+        'hero_image_alt' => NULL,
+        'hero_button_1' => NULL,
+        'hero_button_2' => NULL,
+      ],
+      'template' => 'hero-block',
+      'path' => $path . '/templates',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function hero_block_theme_suggestions_hero_block_alter(array &$suggestions, array $variables) {
+  // Add layout-specific template suggestion.
+  if (!empty($variables['hero_layout'])) {
+    $suggestions[] = 'hero_block__' . $variables['hero_layout'];
+  }
+}

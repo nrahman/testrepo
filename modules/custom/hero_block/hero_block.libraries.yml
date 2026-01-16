@@ -1,0 +1,10 @@
+hero_block:
+  version: 1.x
+  css:
+    component:
+      css/hero-block.css: {}
+  js:
+    js/hero-block.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
