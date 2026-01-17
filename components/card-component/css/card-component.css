@@ -1,0 +1,607 @@
+/**
+ * Card Component Styles
+ *
+ * A versatile card component with multiple layouts and style variants.
+ *
+ * Layouts:
+ * - Vertical (Image Top)
+ * - Horizontal Left (Image Left)
+ * - Horizontal Right (Image Right)
+ *
+ * Style Variants:
+ * - Default
+ * - Featured (Highlighted)
+ * - Outline (Bordered)
+ * - Minimal (No Shadow)
+ * - Elevated (Extra Shadow)
+ */
+
+/* ==========================================================================
+   CSS Custom Properties (Variables)
+   ========================================================================== */
+
+:root {
+  /* Card Colors */
+  --card-bg: #ffffff;
+  --card-text: #1f2937;
+  --card-text-muted: #6b7280;
+  --card-border: #e5e7eb;
+  --card-accent: #2563eb;
+  --card-accent-hover: #1d4ed8;
+  --card-featured-border: #2563eb;
+  --card-featured-bg: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+
+  /* Card Spacing */
+  --card-padding: 1.5rem;
+  --card-gap: 1rem;
+  --card-media-gap: 0;
+
+  /* Card Typography */
+  --card-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --card-heading-size: 1.25rem;
+  --card-eyebrow-size: 0.75rem;
+  --card-description-size: 0.95rem;
+  --card-link-size: 0.9rem;
+
+  /* Card Effects */
+  --card-radius: 12px;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --card-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05);
+  --card-shadow-elevated: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08);
+  --card-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Card Image */
+  --card-image-ratio: 56.25%; /* 16:9 */
+  --card-image-height-horizontal: 220px;
+
+  /* Card Icon */
+  --card-icon-size: 3rem;
+  --card-icon-color: #2563eb;
+  --card-icon-bg: #eff6ff;
+}
+
+/* ==========================================================================
+   Card Base Styles
+   ========================================================================== */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  font-family: var(--card-font-family);
+  overflow: hidden;
+  transition: transform var(--card-transition), box-shadow var(--card-transition);
+  height: 100%;
+}
+
+/* ==========================================================================
+   Style Variants
+   ========================================================================== */
+
+/* Default Style */
+.card--default {
+  box-shadow: var(--card-shadow);
+}
+
+.card--default:hover {
+  box-shadow: var(--card-shadow-hover);
+  transform: translateY(-4px);
+}
+
+/* Featured Style */
+.card--featured {
+  background: var(--card-featured-bg);
+  border: 2px solid var(--card-featured-border);
+  box-shadow: var(--card-shadow);
+}
+
+.card--featured::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--card-accent);
+  z-index: 1;
+}
+
+.card--featured:hover {
+  box-shadow: var(--card-shadow-hover);
+  transform: translateY(-4px);
+}
+
+/* Outline Style */
+.card--outline {
+  border: 2px solid var(--card-border);
+  box-shadow: none;
+}
+
+.card--outline:hover {
+  border-color: var(--card-accent);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+/* Minimal Style */
+.card--minimal {
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+
+.card--minimal .card__media {
+  border-radius: var(--card-radius);
+  overflow: hidden;
+}
+
+.card--minimal:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Elevated Style */
+.card--elevated {
+  box-shadow: var(--card-shadow-elevated);
+}
+
+.card--elevated:hover {
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-6px);
+}
+
+/* ==========================================================================
+   Card Media (Image/Icon Container)
+   ========================================================================== */
+
+.card__media {
+  position: relative;
+  overflow: hidden;
+  background: #f3f4f6;
+}
+
+/* Vertical Layout Media */
+.card--vertical .card__media {
+  padding-top: var(--card-image-ratio);
+}
+
+.card--vertical .card__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--card-transition);
+}
+
+.card--vertical:hover .card__image {
+  transform: scale(1.05);
+}
+
+/* Horizontal Layout Media */
+.card--horizontal-left,
+.card--horizontal-right {
+  flex-direction: row;
+}
+
+.card--horizontal-left .card__media,
+.card--horizontal-right .card__media {
+  flex: 0 0 40%;
+  max-width: 40%;
+  min-height: var(--card-image-height-horizontal);
+}
+
+.card--horizontal-left .card__image,
+.card--horizontal-right .card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--card-transition);
+}
+
+.card--horizontal-left:hover .card__image,
+.card--horizontal-right:hover .card__image {
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   Icon Styles
+   ========================================================================== */
+
+.card__icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+  background: var(--card-icon-bg);
+}
+
+/* For vertical cards with icons */
+.card--vertical .card__icon-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.card__icon-wrapper i,
+.card__icon-wrapper .icon {
+  font-size: var(--card-icon-size);
+  color: var(--card-icon-color);
+  transition: transform var(--card-transition);
+}
+
+.card:hover .card__icon-wrapper i,
+.card:hover .card__icon-wrapper .icon {
+  transform: scale(1.1);
+}
+
+/* Inline Icon (when both image and icon are present) */
+.card__icon--inline {
+  margin-bottom: var(--card-gap);
+}
+
+.card__icon--inline i {
+  font-size: 1.5rem;
+  color: var(--card-icon-color);
+}
+
+/* ==========================================================================
+   Card Content
+   ========================================================================== */
+
+.card__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: var(--card-padding);
+}
+
+.card--horizontal-left .card__content,
+.card--horizontal-right .card__content {
+  justify-content: center;
+}
+
+/* Eyebrow */
+.card__eyebrow {
+  display: inline-block;
+  font-size: var(--card-eyebrow-size);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--card-accent);
+  margin-bottom: 0.5rem;
+}
+
+/* Heading */
+.card__heading {
+  font-size: var(--card-heading-size);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--card-text);
+  margin: 0 0 0.75rem;
+}
+
+.card__heading-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--card-transition);
+}
+
+.card__heading-link:hover {
+  color: var(--card-accent);
+}
+
+/* Description */
+.card__description {
+  font-size: var(--card-description-size);
+  line-height: 1.6;
+  color: var(--card-text-muted);
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.card__description p {
+  margin: 0 0 0.75rem;
+}
+
+.card__description p:last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Card Actions / Link
+   ========================================================================== */
+
+.card__actions {
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--card-link-size);
+  font-weight: 600;
+  color: var(--card-accent);
+  text-decoration: none;
+  transition: gap var(--card-transition), color var(--card-transition);
+}
+
+.card__link:hover {
+  color: var(--card-accent-hover);
+  gap: 0.75rem;
+}
+
+.card__link-icon {
+  transition: transform var(--card-transition);
+}
+
+.card__link:hover .card__link-icon {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   Clickable Card (Full Card Link)
+   ========================================================================== */
+
+.card--clickable {
+  cursor: pointer;
+}
+
+.card__overlay-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+}
+
+.card--clickable .card__heading-link {
+  position: relative;
+  z-index: 3;
+}
+
+/* Active state for clickable cards */
+.card--clickable.card--active {
+  transform: scale(0.98);
+}
+
+/* ==========================================================================
+   No Image State
+   ========================================================================== */
+
+.card--no-image.card--vertical .card__content {
+  padding-top: var(--card-padding);
+}
+
+.card--no-image:not(.card--has-icon) .card__content {
+  justify-content: flex-start;
+}
+
+/* ==========================================================================
+   Animation - Entrance
+   ========================================================================== */
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card--visible {
+  animation: cardFadeIn 0.5s ease-out forwards;
+}
+
+/* Stagger animation for grid */
+.card-grid .card:nth-child(1) { animation-delay: 0s; }
+.card-grid .card:nth-child(2) { animation-delay: 0.1s; }
+.card-grid .card:nth-child(3) { animation-delay: 0.2s; }
+.card-grid .card:nth-child(4) { animation-delay: 0.3s; }
+.card-grid .card:nth-child(5) { animation-delay: 0.4s; }
+.card-grid .card:nth-child(6) { animation-delay: 0.5s; }
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+/* Tablet */
+@media (max-width: 992px) {
+  :root {
+    --card-heading-size: 1.125rem;
+    --card-padding: 1.25rem;
+  }
+
+  .card--horizontal-left .card__media,
+  .card--horizontal-right .card__media {
+    flex: 0 0 35%;
+    max-width: 35%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  :root {
+    --card-padding: 1rem;
+    --card-image-height-horizontal: 200px;
+  }
+
+  /* Stack horizontal cards on mobile */
+  .card--horizontal-left,
+  .card--horizontal-right {
+    flex-direction: column;
+  }
+
+  .card--horizontal-left .card__media,
+  .card--horizontal-right .card__media {
+    flex: none;
+    max-width: 100%;
+    min-height: auto;
+    padding-top: var(--card-image-ratio);
+  }
+
+  .card--horizontal-left .card__image,
+  .card--horizontal-right .card__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  /* Reset order for mobile - image always first */
+  .card--horizontal-right .card__media {
+    order: -1;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  :root {
+    --card-heading-size: 1rem;
+    --card-description-size: 0.9rem;
+    --card-radius: 8px;
+  }
+}
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+
+.card__link:focus,
+.card__heading-link:focus {
+  outline: 2px solid var(--card-accent);
+  outline-offset: 2px;
+}
+
+.card__link:focus:not(:focus-visible),
+.card__heading-link:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.card__link:focus-visible,
+.card__heading-link:focus-visible {
+  outline: 2px solid var(--card-accent);
+  outline-offset: 2px;
+}
+
+.card__overlay-link:focus {
+  outline: none;
+}
+
+.card--clickable:focus-within {
+  outline: 2px solid var(--card-accent);
+  outline-offset: 2px;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card__image,
+  .card__link,
+  .card__link-icon,
+  .card__icon-wrapper i {
+    transition: none;
+  }
+
+  .card:hover,
+  .card--default:hover,
+  .card--featured:hover,
+  .card--elevated:hover {
+    transform: none;
+  }
+
+  .card:hover .card__image {
+    transform: none;
+  }
+
+  .card--visible {
+    animation: none;
+  }
+}
+
+/* High Contrast */
+@media (prefers-contrast: high) {
+  .card--outline {
+    border-width: 3px;
+  }
+
+  .card__link {
+    text-decoration: underline;
+  }
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    page-break-inside: avoid;
+  }
+
+  .card__link-icon {
+    display: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   Card Grid Helper (Optional)
+   ========================================================================== */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.card-grid--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.card-grid--4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 992px) {
+  .card-grid--3,
+  .card-grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .card-grid,
+  .card-grid--2,
+  .card-grid--3,
+  .card-grid--4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Filter Styles (for demo page)
+   ========================================================================== */
+
+.card[data-hidden="true"] {
+  display: none;
+}

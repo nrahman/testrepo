@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Component - All Variations</title>
+  <link rel="stylesheet" href="css/card-component.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Demo Page Styles */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f3f4f6;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+
+    .demo-header {
+      background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+      color: white;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .demo-header h1 {
+      margin: 0 0 0.5rem;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+
+    .demo-header p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 1.1rem;
+    }
+
+    .demo-controls {
+      background: #1f2937;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .control-group label {
+      color: #9ca3af;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .control-group select {
+      padding: 0.5rem 1rem;
+      border: 1px solid #374151;
+      border-radius: 6px;
+      background: #374151;
+      color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .control-group select:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+
+    .demo-section {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .demo-section h2 {
+      font-size: 1.75rem;
+      margin: 0 0 0.5rem;
+      color: #1f2937;
+    }
+
+    .demo-section > p {
+      color: #6b7280;
+      margin: 0 0 2rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .card-grid--2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card-grid--horizontal {
+      grid-template-columns: 1fr;
+      max-width: 800px;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 0;
+    }
+
+    /* Code Preview */
+    .code-toggle {
+      background: #374151;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    .code-preview {
+      display: none;
+      background: #1f2937;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+      overflow-x: auto;
+    }
+
+    .code-preview.active {
+      display: block;
+    }
+
+    .code-preview code {
+      color: #a5b4fc;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.8rem;
+      white-space: pre;
+    }
+
+    @media (max-width: 768px) {
+      .demo-header h1 {
+        font-size: 1.75rem;
+      }
+
+      .demo-controls {
+        flex-direction: column;
+      }
+
+      .card-grid--2 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="demo-header">
+    <h1>Card Component</h1>
+    <p>A versatile card with multiple layouts and style variants</p>
+  </header>
+
+  <!-- Controls -->
+  <div class="demo-controls">
+    <div class="control-group">
+      <label>Layout:</label>
+      <select id="layout-select">
+        <option value="all">All Layouts</option>
+        <option value="vertical">Vertical</option>
+        <option value="horizontal-left">Horizontal Left</option>
+        <option value="horizontal-right">Horizontal Right</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>Style:</label>
+      <select id="style-select">
+        <option value="all">All Styles</option>
+        <option value="default">Default</option>
+        <option value="featured">Featured</option>
+        <option value="outline">Outline</option>
+        <option value="minimal">Minimal</option>
+        <option value="elevated">Elevated</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Section: Vertical Layout Cards -->
+  <section class="demo-section" id="section-vertical">
+    <h2>Vertical Layout (Image Top)</h2>
+    <p>Classic card layout with image on top and content below.</p>
+
+    <div class="card-grid">
+
+      <!-- Default Style -->
+      <article class="card card--vertical card--default card--has-image" data-layout="vertical" data-style="default">
+        <div class="card__media">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=640&q=80" alt="Technology" class="card__image" loading="lazy">
+        </div>
+        <div class="card__content">
+          <span class="card__eyebrow">Technology</span>
+          <h3 class="card__heading">The Future of Web Development</h3>
+          <div class="card__description">
+            <p>Explore the latest trends and technologies shaping the future of web development and digital experiences.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              Read More
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Featured Style -->
+      <article class="card card--vertical card--featured card--has-image" data-layout="vertical" data-style="featured">
+        <div class="card__media">
+          <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=640&q=80" alt="Team" class="card__image" loading="lazy">
+        </div>
+        <div class="card__content">
+          <span class="card__eyebrow">Featured</span>
+          <h3 class="card__heading">Building High-Performance Teams</h3>
+          <div class="card__description">
+            <p>Learn strategies for creating and nurturing teams that deliver exceptional results consistently.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              Learn More
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Outline Style -->
+      <article class="card card--vertical card--outline card--has-image" data-layout="vertical" data-style="outline">
+        <div class="card__media">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=640&q=80" alt="Analytics" class="card__image" loading="lazy">
+        </div>
+        <div class="card__content">
+          <span class="card__eyebrow">Analytics</span>
+          <h3 class="card__heading">Data-Driven Decision Making</h3>
+          <div class="card__description">
+            <p>Harness the power of data analytics to make informed business decisions and drive growth.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              Explore
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Minimal Style -->
+      <article class="card card--vertical card--minimal card--has-image" data-layout="vertical" data-style="minimal">
+        <div class="card__media">
+          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=640&q=80" alt="Collaboration" class="card__image" loading="lazy">
+        </div>
+        <div class="card__content">
+          <span class="card__eyebrow">Culture</span>
+          <h3 class="card__heading">Remote Work Best Practices</h3>
+          <div class="card__description">
+            <p>Tips and strategies for maintaining productivity and connection in distributed teams.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              View Guide
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Elevated Style -->
+      <article class="card card--vertical card--elevated card--has-image" data-layout="vertical" data-style="elevated">
+        <div class="card__media">
+          <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=640&q=80" alt="Innovation" class="card__image" loading="lazy">
+        </div>
+        <div class="card__content">
+          <span class="card__eyebrow">Innovation</span>
+          <h3 class="card__heading">Emerging Tech Trends 2024</h3>
+          <div class="card__description">
+            <p>Stay ahead of the curve with insights into the technologies reshaping industries worldwide.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              Discover
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Section: Icon Cards (No Image) -->
+  <section class="demo-section" id="section-icons">
+    <h2>Icon Cards (No Image)</h2>
+    <p>Cards with icons instead of images - great for features or services.</p>
+
+    <div class="card-grid">
+
+      <!-- Icon Card 1 -->
+      <article class="card card--vertical card--default card--has-icon" data-layout="vertical" data-style="default">
+        <div class="card__media">
+          <div class="card__icon-wrapper">
+            <i class="fa-solid fa-rocket" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="card__content">
+          <h3 class="card__heading">Fast Performance</h3>
+          <div class="card__description">
+            <p>Lightning-fast load times and optimized performance for the best user experience.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              Learn More
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Icon Card 2 -->
+      <article class="card card--vertical card--outline card--has-icon" data-layout="vertical" data-style="outline">
+        <div class="card__media">
+          <div class="card__icon-wrapper">
+            <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="card__content">
+          <h3 class="card__heading">Secure by Design</h3>
+          <div class="card__description">
+            <p>Enterprise-grade security built into every layer of the platform.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              Learn More
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Icon Card 3 -->
+      <article class="card card--vertical card--featured card--has-icon" data-layout="vertical" data-style="featured">
+        <div class="card__media">
+          <div class="card__icon-wrapper">
+            <i class="fa-solid fa-code" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="card__content">
+          <h3 class="card__heading">Developer Friendly</h3>
+          <div class="card__description">
+            <p>Clean APIs, comprehensive docs, and tools developers love to work with.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              View Docs
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Icon Card 4 -->
+      <article class="card card--vertical card--elevated card--has-icon" data-layout="vertical" data-style="elevated">
+        <div class="card__media">
+          <div class="card__icon-wrapper">
+            <i class="fa-solid fa-headset" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="card__content">
+          <h3 class="card__heading">24/7 Support</h3>
+          <div class="card__description">
+            <p>Round-the-clock expert support to help you succeed at every step.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              Contact Us
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Section: Horizontal Layout Cards -->
+  <section class="demo-section" id="section-horizontal">
+    <h2>Horizontal Layout (Image Left)</h2>
+    <p>Side-by-side layout perfect for featured content or blog posts.</p>
+
+    <div class="card-grid card-grid--horizontal">
+
+      <!-- Horizontal Left - Default -->
+      <article class="card card--horizontal-left card--default card--has-image" data-layout="horizontal-left" data-style="default">
+        <div class="card__media">
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=640&q=80" alt="Coding" class="card__image" loading="lazy">
+        </div>
+        <div class="card__content">
+          <span class="card__eyebrow">Development</span>
+          <h3 class="card__heading">Modern JavaScript Frameworks</h3>
+          <div class="card__description">
+            <p>A comprehensive comparison of React, Vue, and Angular for your next project. Learn which framework best suits your needs.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              Read Article
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Horizontal Left - Featured -->
+      <article class="card card--horizontal-left card--featured card--has-image" data-layout="horizontal-left" data-style="featured">
+        <div class="card__media">
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=640&q=80" alt="Meeting" class="card__image" loading="lazy">
+        </div>
+        <div class="card__content">
+          <span class="card__eyebrow">Case Study</span>
+          <h3 class="card__heading">How We Increased Conversion by 300%</h3>
+          <div class="card__description">
+            <p>Learn the strategies and tactics we used to dramatically improve our client's conversion rates in just 3 months.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              View Case Study
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Section: Horizontal Right Layout -->
+  <section class="demo-section" id="section-horizontal-right">
+    <h2>Horizontal Layout (Image Right)</h2>
+    <p>Alternate horizontal layout with image on the right side.</p>
+
+    <div class="card-grid card-grid--horizontal">
+
+      <!-- Horizontal Right - Default -->
+      <article class="card card--horizontal-right card--default card--has-image" data-layout="horizontal-right" data-style="default">
+        <div class="card__content">
+          <span class="card__eyebrow">Design</span>
+          <h3 class="card__heading">UI/UX Design Principles</h3>
+          <div class="card__description">
+            <p>Master the fundamentals of user interface and user experience design to create products people love to use.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              Start Learning
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="card__media">
+          <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=640&q=80" alt="Design" class="card__image" loading="lazy">
+        </div>
+      </article>
+
+      <!-- Horizontal Right - Elevated -->
+      <article class="card card--horizontal-right card--elevated card--has-image" data-layout="horizontal-right" data-style="elevated">
+        <div class="card__content">
+          <span class="card__eyebrow">Product</span>
+          <h3 class="card__heading">Launching Your SaaS Product</h3>
+          <div class="card__description">
+            <p>A step-by-step guide to successfully launching your software-as-a-service product and acquiring your first customers.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              Get the Guide
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="card__media">
+          <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=640&q=80" alt="Product Launch" class="card__image" loading="lazy">
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Section: Clickable Cards -->
+  <section class="demo-section" id="section-clickable">
+    <h2>Clickable Cards (No Description)</h2>
+    <p>Entire card is clickable - great for navigation or link lists.</p>
+
+    <div class="card-grid">
+
+      <!-- Clickable Card 1 -->
+      <article class="card card--vertical card--default card--has-image card--clickable" data-layout="vertical" data-style="default">
+        <div class="card__media">
+          <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=640&q=80" alt="Office" class="card__image" loading="lazy">
+        </div>
+        <div class="card__content">
+          <span class="card__eyebrow">Careers</span>
+          <h3 class="card__heading">
+            <a href="#" class="card__heading-link">Join Our Team</a>
+          </h3>
+        </div>
+        <a href="#" class="card__overlay-link" aria-label="Join Our Team" tabindex="-1"></a>
+      </article>
+
+      <!-- Clickable Card 2 -->
+      <article class="card card--vertical card--outline card--has-image card--clickable" data-layout="vertical" data-style="outline">
+        <div class="card__media">
+          <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=640&q=80" alt="Conference" class="card__image" loading="lazy">
+        </div>
+        <div class="card__content">
+          <span class="card__eyebrow">Events</span>
+          <h3 class="card__heading">
+            <a href="#" class="card__heading-link">Upcoming Webinars</a>
+          </h3>
+        </div>
+        <a href="#" class="card__overlay-link" aria-label="Upcoming Webinars" tabindex="-1"></a>
+      </article>
+
+      <!-- Clickable Card 3 -->
+      <article class="card card--vertical card--featured card--has-icon card--clickable" data-layout="vertical" data-style="featured">
+        <div class="card__media">
+          <div class="card__icon-wrapper">
+            <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="card__content">
+          <span class="card__eyebrow">Resources</span>
+          <h3 class="card__heading">
+            <a href="#" class="card__heading-link">Documentation</a>
+          </h3>
+        </div>
+        <a href="#" class="card__overlay-link" aria-label="Documentation" tabindex="-1"></a>
+      </article>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Section: Minimal Style Grid -->
+  <section class="demo-section" id="section-minimal">
+    <h2>Minimal Style - Content Focus</h2>
+    <p>Clean, distraction-free cards that put content first.</p>
+
+    <div class="card-grid">
+
+      <article class="card card--vertical card--minimal card--has-image" data-layout="vertical" data-style="minimal">
+        <div class="card__media">
+          <img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=640&q=80" alt="Code" class="card__image" loading="lazy">
+        </div>
+        <div class="card__content">
+          <span class="card__eyebrow">Tutorial</span>
+          <h3 class="card__heading">Getting Started with APIs</h3>
+          <div class="card__description">
+            <p>Learn the basics of working with REST APIs and integrating third-party services.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              Start Tutorial
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card card--vertical card--minimal card--has-image" data-layout="vertical" data-style="minimal">
+        <div class="card__media">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=640&q=80" alt="Discussion" class="card__image" loading="lazy">
+        </div>
+        <div class="card__content">
+          <span class="card__eyebrow">Community</span>
+          <h3 class="card__heading">Developer Forum</h3>
+          <div class="card__description">
+            <p>Connect with other developers, ask questions, and share your knowledge.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              Join Discussion
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card card--vertical card--minimal card--has-image" data-layout="vertical" data-style="minimal">
+        <div class="card__media">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=640&q=80" alt="Dashboard" class="card__image" loading="lazy">
+        </div>
+        <div class="card__content">
+          <span class="card__eyebrow">Tools</span>
+          <h3 class="card__heading">Analytics Dashboard</h3>
+          <div class="card__description">
+            <p>Track performance metrics and gain insights with our powerful analytics tools.</p>
+          </div>
+          <div class="card__actions">
+            <a href="#" class="card__link">
+              View Demo
+              <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <script src="js/card-component.js"></script>
+</body>
+</html>
