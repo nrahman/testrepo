@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.card_block
+    - field.storage.block_content.field_card_heading
+id: block_content.card_block.field_card_heading
+field_name: field_card_heading
+entity_type: block_content
+bundle: card_block
+label: Heading
+description: 'The main heading/title of the card.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

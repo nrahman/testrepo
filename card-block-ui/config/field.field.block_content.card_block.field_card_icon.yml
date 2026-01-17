@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.card_block
+    - field.storage.block_content.field_card_icon
+id: block_content.card_block.field_card_icon
+field_name: field_card_icon
+entity_type: block_content
+bundle: card_block
+label: Icon
+description: 'Icon class name (e.g., "fa-solid fa-star" for Font Awesome, "bi-star" for Bootstrap Icons). Optional - displays instead of or alongside image.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

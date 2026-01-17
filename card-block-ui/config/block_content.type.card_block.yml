@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: card_block
+label: 'Card Block'
+revision: 1
+description: 'A versatile card component with multiple layouts (vertical, horizontal) and style variants (default, featured, outline, minimal). Includes optional image, eyebrow text, heading, description, link, and icon.'

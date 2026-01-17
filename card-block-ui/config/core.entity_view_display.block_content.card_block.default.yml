@@ -1,0 +1,93 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.card_block
+    - field.field.block_content.card_block.field_card_description
+    - field.field.block_content.card_block.field_card_eyebrow
+    - field.field.block_content.card_block.field_card_heading
+    - field.field.block_content.card_block.field_card_icon
+    - field.field.block_content.card_block.field_card_image
+    - field.field.block_content.card_block.field_card_layout
+    - field.field.block_content.card_block.field_card_link
+    - field.field.block_content.card_block.field_card_style
+    - image.style.medium
+  module:
+    - image
+    - link
+    - options
+    - text
+id: block_content.card_block.default
+targetEntityType: block_content
+bundle: card_block
+mode: default
+content:
+  field_card_description:
+    type: text_default
+    weight: 4
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_card_eyebrow:
+    type: string
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_card_heading:
+    type: string
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_card_icon:
+    type: string
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_card_image:
+    type: image
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      image_style: medium
+      image_link: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+  field_card_layout:
+    type: list_default
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_card_link:
+    type: link
+    weight: 7
+    region: content
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_card_style:
+    type: list_default
+    weight: 1
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.card_block
+    - field.storage.block_content.field_card_description
+  module:
+    - text
+id: block_content.card_block.field_card_description
+field_name: field_card_description
+entity_type: block_content
+bundle: card_block
+label: Description
+description: 'The body text or description for the card. Optional.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

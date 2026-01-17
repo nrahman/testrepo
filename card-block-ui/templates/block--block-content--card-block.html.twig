@@ -1,0 +1,13 @@
+{#
+/**
+ * @file
+ * Theme override for the Card Block wrapper.
+ *
+ * Preserves attributes for contextual links in Layout Builder.
+ *
+ * @see template_preprocess_block()
+ */
+#}
+<div{{ attributes.addClass('card-block-wrapper') }}>
+  {{ content }}
+</div>

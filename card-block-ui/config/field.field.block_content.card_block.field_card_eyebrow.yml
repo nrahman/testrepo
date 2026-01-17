@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.card_block
+    - field.storage.block_content.field_card_eyebrow
+id: block_content.card_block.field_card_eyebrow
+field_name: field_card_eyebrow
+entity_type: block_content
+bundle: card_block
+label: 'Eyebrow Text'
+description: 'Small text displayed above the heading (e.g., category, tag, date). Optional.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

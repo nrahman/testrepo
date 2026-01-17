@@ -1,0 +1,285 @@
+{#
+/**
+ * @file
+ * Theme override for the Card Block content.
+ *
+ * Available variables:
+ * - content: The block content with all fields.
+ * - content.field_card_layout: Layout (vertical, horizontal_left, horizontal_right)
+ * - content.field_card_style: Style variant (default, featured, outline, minimal, elevated)
+ * - content.field_card_eyebrow: Eyebrow/category text
+ * - content.field_card_heading: Main heading
+ * - content.field_card_description: Description/body text
+ * - content.field_card_image: Card image
+ * - content.field_card_link: CTA link
+ * - content.field_card_icon: Icon class
+ *
+ * Layout Options:
+ * - vertical: Image on top, content below
+ * - horizontal_left: Image on left, content on right
+ * - horizontal_right: Image on right, content on left
+ *
+ * Style Variants:
+ * - default: Standard card with subtle shadow
+ * - featured: Highlighted with accent color border
+ * - outline: Bordered without background shadow
+ * - minimal: No shadow or border
+ * - elevated: Extra shadow for depth
+ *
+ * @see template_preprocess_block_content()
+ */
+#}
+
+{# Get layout value #}
+{% set layout_raw = content.field_card_layout[0]['#markup']|default('vertical') %}
+{% set layout = layout_raw|striptags|trim|lower|replace({' ': '_', '/': '_', '(': '', ')': ''}) %}
+
+{# Normalize layout #}
+{% if 'horizontal' in layout and 'left' in layout %}
+  {% set layout = 'horizontal_left' %}
+{% elseif 'horizontal' in layout and 'right' in layout %}
+  {% set layout = 'horizontal_right' %}
+{% else %}
+  {% set layout = 'vertical' %}
+{% endif %}
+
+{# Get style value #}
+{% set style_raw = content.field_card_style[0]['#markup']|default('default') %}
+{% set style = style_raw|striptags|trim|lower|replace({' ': '_', '(': '', ')': ''}) %}
+
+{# Normalize style #}
+{% if 'featured' in style or 'highlight' in style %}
+  {% set style = 'featured' %}
+{% elseif 'outline' in style or 'border' in style %}
+  {% set style = 'outline' %}
+{% elseif 'minimal' in style %}
+  {% set style = 'minimal' %}
+{% elseif 'elevated' in style or 'shadow' in style %}
+  {% set style = 'elevated' %}
+{% else %}
+  {% set style = 'default' %}
+{% endif %}
+
+{# Layout CSS class mapping #}
+{% set layout_class = 'card--' ~ layout|replace({'_': '-'}) %}
+{% set style_class = 'card--' ~ style %}
+
+{# Get field values #}
+{% set eyebrow = content.field_card_eyebrow[0]['#context']['value']|default('') %}
+{% set heading = content.field_card_heading[0]['#context']['value']|default('') %}
+
+{# Get description - handle text_long field #}
+{% set description = '' %}
+{% if content.field_card_description[0]['#text'] is defined %}
+  {% set description = content.field_card_description[0]['#text'] %}
+{% elseif content.field_card_description[0]['#context']['value'] is defined %}
+  {% set description = content.field_card_description[0]['#context']['value'] %}
+{% endif %}
+
+{# Get image URL and alt #}
+{% set has_image = content.field_card_image[0]['#item'] is defined %}
+{% set image_url = '' %}
+{% set image_alt = '' %}
+{% if has_image %}
+  {% set image_url = file_url(content.field_card_image[0]['#item'].entity.uri.value)|default('') %}
+  {% set image_alt = content.field_card_image[0]['#item'].alt|default('') %}
+{% endif %}
+
+{# Get link data #}
+{% set link_title = content.field_card_link[0]['#title']|default('') %}
+{% set link_url = content.field_card_link[0]['#url']|default('') %}
+{% set has_link = link_title and link_url %}
+
+{# Get icon #}
+{% set icon = content.field_card_icon[0]['#context']['value']|default('') %}
+{% set has_icon = icon|length > 0 %}
+
+{# Determine if card should be clickable (entire card as link) #}
+{% set card_clickable = has_link and not description %}
+
+{# Build classes array #}
+{% set classes = [
+  'card',
+  layout_class,
+  style_class,
+  has_image ? 'card--has-image' : 'card--no-image',
+  has_icon ? 'card--has-icon' : '',
+  card_clickable ? 'card--clickable' : '',
+] %}
+
+<article{{ attributes.addClass(classes) }}>
+  {% if layout == 'vertical' %}
+    {# ============================================
+       VERTICAL LAYOUT (Image Top)
+       ============================================ #}
+
+    {# Image/Icon Media Section #}
+    {% if has_image or has_icon %}
+      <div class="card__media">
+        {% if has_image %}
+          <img src="{{ image_url }}" alt="{{ image_alt }}" class="card__image" loading="lazy">
+        {% endif %}
+        {% if has_icon and not has_image %}
+          <div class="card__icon-wrapper">
+            <i class="{{ icon }}" aria-hidden="true"></i>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {# Content Section #}
+    <div class="card__content">
+      {% if has_icon and has_image %}
+        <div class="card__icon card__icon--inline">
+          <i class="{{ icon }}" aria-hidden="true"></i>
+        </div>
+      {% endif %}
+
+      {% if eyebrow %}
+        <span class="card__eyebrow">{{ eyebrow }}</span>
+      {% endif %}
+
+      {% if heading %}
+        <h3 class="card__heading">
+          {% if card_clickable %}
+            <a href="{{ link_url }}" class="card__heading-link">{{ heading }}</a>
+          {% else %}
+            {{ heading }}
+          {% endif %}
+        </h3>
+      {% endif %}
+
+      {% if description %}
+        <div class="card__description">{{ description|raw }}</div>
+      {% endif %}
+
+      {% if has_link and not card_clickable %}
+        <div class="card__actions">
+          <a href="{{ link_url }}" class="card__link">
+            {{ link_title }}
+            <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+  {% elseif layout == 'horizontal_left' %}
+    {# ============================================
+       HORIZONTAL LAYOUT (Image Left)
+       ============================================ #}
+
+    {# Image/Icon Media Section #}
+    {% if has_image or has_icon %}
+      <div class="card__media">
+        {% if has_image %}
+          <img src="{{ image_url }}" alt="{{ image_alt }}" class="card__image" loading="lazy">
+        {% elseif has_icon %}
+          <div class="card__icon-wrapper">
+            <i class="{{ icon }}" aria-hidden="true"></i>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {# Content Section #}
+    <div class="card__content">
+      {% if has_icon and has_image %}
+        <div class="card__icon card__icon--inline">
+          <i class="{{ icon }}" aria-hidden="true"></i>
+        </div>
+      {% endif %}
+
+      {% if eyebrow %}
+        <span class="card__eyebrow">{{ eyebrow }}</span>
+      {% endif %}
+
+      {% if heading %}
+        <h3 class="card__heading">
+          {% if card_clickable %}
+            <a href="{{ link_url }}" class="card__heading-link">{{ heading }}</a>
+          {% else %}
+            {{ heading }}
+          {% endif %}
+        </h3>
+      {% endif %}
+
+      {% if description %}
+        <div class="card__description">{{ description|raw }}</div>
+      {% endif %}
+
+      {% if has_link and not card_clickable %}
+        <div class="card__actions">
+          <a href="{{ link_url }}" class="card__link">
+            {{ link_title }}
+            <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+  {% elseif layout == 'horizontal_right' %}
+    {# ============================================
+       HORIZONTAL LAYOUT (Image Right)
+       ============================================ #}
+
+    {# Content Section (First for Image Right) #}
+    <div class="card__content">
+      {% if has_icon and has_image %}
+        <div class="card__icon card__icon--inline">
+          <i class="{{ icon }}" aria-hidden="true"></i>
+        </div>
+      {% endif %}
+
+      {% if eyebrow %}
+        <span class="card__eyebrow">{{ eyebrow }}</span>
+      {% endif %}
+
+      {% if heading %}
+        <h3 class="card__heading">
+          {% if card_clickable %}
+            <a href="{{ link_url }}" class="card__heading-link">{{ heading }}</a>
+          {% else %}
+            {{ heading }}
+          {% endif %}
+        </h3>
+      {% endif %}
+
+      {% if description %}
+        <div class="card__description">{{ description|raw }}</div>
+      {% endif %}
+
+      {% if has_link and not card_clickable %}
+        <div class="card__actions">
+          <a href="{{ link_url }}" class="card__link">
+            {{ link_title }}
+            <svg class="card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+    {# Image/Icon Media Section (Second for Image Right) #}
+    {% if has_image or has_icon %}
+      <div class="card__media">
+        {% if has_image %}
+          <img src="{{ image_url }}" alt="{{ image_alt }}" class="card__image" loading="lazy">
+        {% elseif has_icon %}
+          <div class="card__icon-wrapper">
+            <i class="{{ icon }}" aria-hidden="true"></i>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endif %}
+
+  {# Clickable card overlay for full-card linking #}
+  {% if card_clickable %}
+    <a href="{{ link_url }}" class="card__overlay-link" aria-label="{{ heading }}" tabindex="-1"></a>
+  {% endif %}
+</article>

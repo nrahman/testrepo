@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.card_block
+    - field.storage.block_content.field_card_link
+  module:
+    - link
+id: block_content.card_block.field_card_link
+field_name: field_card_link
+entity_type: block_content
+bundle: card_block
+label: Link
+description: 'Call-to-action link/button. Optional.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link

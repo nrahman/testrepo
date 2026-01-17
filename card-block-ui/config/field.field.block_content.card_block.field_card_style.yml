@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.card_block
+    - field.storage.block_content.field_card_style
+  module:
+    - options
+id: block_content.card_block.field_card_style
+field_name: field_card_style
+entity_type: block_content
+bundle: card_block
+label: Style
+description: 'Select the card style variant.'
+required: true
+translatable: false
+default_value:
+  -
+    value: default
+default_value_callback: ''
+settings: {  }
+field_type: list_string

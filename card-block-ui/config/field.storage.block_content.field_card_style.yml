@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+    - options
+id: block_content.field_card_style
+field_name: field_card_style
+entity_type: block_content
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: default
+      label: 'Default'
+    -
+      value: featured
+      label: 'Featured (Highlighted)'
+    -
+      value: outline
+      label: 'Outline (Bordered)'
+    -
+      value: minimal
+      label: 'Minimal (No Shadow)'
+    -
+      value: elevated
+      label: 'Elevated (Extra Shadow)'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
