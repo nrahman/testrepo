@@ -3,11 +3,8 @@ secure_embed.settings:
   label: 'Secure Embed settings'
   mapping:
     allowed_domains:
-      type: sequence
-      label: 'Allowed domains'
-      sequence:
-        type: string
-        label: 'Domain'
+      type: string
+      label: 'Allowed domains (one per line)'
     default_width:
       type: string
       label: 'Default width'
@@ -42,7 +39,3 @@ secure_embed.settings:
 filter_settings.secure_embed_filter:
   type: filter
   label: 'Secure Embed filter'
-  mapping:
-    process_embeds:
-      type: boolean
-      label: 'Process embeds'

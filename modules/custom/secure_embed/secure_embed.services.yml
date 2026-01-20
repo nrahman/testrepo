@@ -1,0 +1,7 @@
+services:
+  secure_embed.manager:
+    class: Drupal\secure_embed\Service\SecureEmbedManager
+    arguments:
+      - '@config.factory'
+      - '@cache.default'
+      - '@module_handler'

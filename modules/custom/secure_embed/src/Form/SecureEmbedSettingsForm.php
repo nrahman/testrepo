@@ -4,11 +4,29 @@ namespace Drupal\secure_embed\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\secure_embed\Service\SecureEmbedManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure Secure Embed settings.
  */
 class SecureEmbedSettingsForm extends ConfigFormBase {
+
+  /**
+   * The secure embed manager.
+   *
+   * @var \Drupal\secure_embed\Service\SecureEmbedManager
+   */
+  protected $embedManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    $instance = parent::create($container);
+    $instance->embedManager = $container->get('secure_embed.manager');
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
@@ -37,11 +55,11 @@ class SecureEmbedSettingsForm extends ConfigFormBase {
       '#description' => $this->t('Only URLs from these domains will be allowed for embedding. Use wildcard (*) for subdomains, e.g., "*.youtube.com".'),
     ];
 
-    $allowed_domains = $config->get('allowed_domains') ?? [];
+    $allowed_domains = $config->get('allowed_domains') ?? '';
     $form['domain_settings']['allowed_domains'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Allowed Domains'),
-      '#default_value' => implode("\n", $allowed_domains),
+      '#default_value' => $allowed_domains,
       '#description' => $this->t('Enter one domain per line. Examples:<br>youtube.com<br>*.youtube.com<br>vimeo.com'),
       '#rows' => 15,
     ];
@@ -200,16 +218,17 @@ class SecureEmbedSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Process domains.
+    // Normalize domains text (one per line, trimmed).
     $domains_text = $form_state->getValue('allowed_domains');
-    $domains = array_values(array_filter(array_map('trim', explode("\n", $domains_text))));
+    $domains = array_filter(array_map('trim', explode("\n", $domains_text)));
+    $normalized_domains = implode("\n", $domains);
 
     // Process checkboxes to get only selected values.
     $sandbox_attributes = array_values(array_filter($form_state->getValue('sandbox_attributes')));
     $allow_attributes = array_values(array_filter($form_state->getValue('allow_attributes')));
 
     $this->config('secure_embed.settings')
-      ->set('allowed_domains', $domains)
+      ->set('allowed_domains', $normalized_domains)
       ->set('default_width', $form_state->getValue('default_width'))
       ->set('default_height', $form_state->getValue('default_height'))
       ->set('default_aspect_ratio', $form_state->getValue('default_aspect_ratio'))
@@ -219,6 +238,9 @@ class SecureEmbedSettingsForm extends ConfigFormBase {
       ->set('sandbox_attributes', $sandbox_attributes)
       ->set('allow_attributes', $allow_attributes)
       ->save();
+
+    // Clear the domain pattern cache.
+    $this->embedManager->clearCache();
 
     parent::submitForm($form, $form_state);
   }

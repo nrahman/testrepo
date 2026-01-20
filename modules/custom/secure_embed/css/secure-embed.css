@@ -92,6 +92,10 @@
 
 /* Error state */
 .secure-embed-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   padding: 2rem;
   background-color: #fef2f2;
   border: 1px solid #fecaca;
@@ -99,6 +103,36 @@
   color: #dc2626;
   font-size: 0.875rem;
   text-align: center;
+}
+
+.secure-embed-error__icon {
+  flex-shrink: 0;
+}
+
+.secure-embed-error__message {
+  line-height: 1.4;
+}
+
+/* Placeholder (CKEditor) */
+.secure-embed-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2rem;
+  background-color: #f3f4f6;
+  border: 2px dashed #d1d5db;
+  border-radius: var(--secure-embed-border-radius);
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.secure-embed-placeholder__icon {
+  font-size: 1.25rem;
+}
+
+.secure-embed-placeholder__label {
+  font-weight: 500;
 }
 
 /* Reduced motion */

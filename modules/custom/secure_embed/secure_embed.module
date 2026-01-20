@@ -5,7 +5,7 @@
  * Secure Embed module file.
  *
  * Provides a secure way to embed external content via CKEditor
- * with domain whitelisting and sanitized parameters.
+ * with domain whitelisting, HMAC-signed tokens, and sanitized parameters.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -21,12 +21,16 @@ function secure_embed_help($route_name, RouteMatchInterface $route_match) {
       $output .= '<h3>' . t('Security Features') . '</h3>';
       $output .= '<ul>';
       $output .= '<li>' . t('<strong>Domain Whitelisting:</strong> Only URLs from approved domains can be embedded.') . '</li>';
+      $output .= '<li>' . t('<strong>HMAC Signed Tokens:</strong> Embed tokens are cryptographically signed to prevent tampering.') . '</li>';
+      $output .= '<li>' . t('<strong>HTTPS Only:</strong> Only secure HTTPS URLs are allowed.') . '</li>';
       $output .= '<li>' . t('<strong>Parameter Sanitization:</strong> All embed parameters are sanitized before rendering.') . '</li>';
       $output .= '<li>' . t('<strong>No Raw HTML:</strong> Users never enter raw iframe code directly.') . '</li>';
       $output .= '<li>' . t('<strong>CSP Compatible:</strong> Embeds use secure sandbox attributes.') . '</li>';
       $output .= '</ul>';
       $output .= '<h3>' . t('Usage') . '</h3>';
       $output .= '<p>' . t('Click the "Secure Embed" button in CKEditor to insert an embed. Enter the URL and configure display options.') . '</p>';
+      $output .= '<h3>' . t('Extending') . '</h3>';
+      $output .= '<p>' . t('Implement hook_secure_embed_validate_alter(), hook_secure_embed_params_alter(), or hook_secure_embed_render_alter() to customize behavior.') . '</p>';
       return $output;
 
     case 'secure_embed.settings':
@@ -41,23 +45,23 @@ function secure_embed_theme($existing, $type, $theme, $path) {
   return [
     'secure_embed' => [
       'variables' => [
-        'url' => NULL,
-        'width' => '100%',
-        'height' => '400',
-        'title' => '',
-        'aspect_ratio' => '16:9',
-        'allow' => [],
-        'sandbox' => [],
-        'loading' => 'lazy',
+        'wrapper_attributes' => [],
+        'iframe_attributes' => [],
         'responsive' => TRUE,
-        'custom_class' => '',
       ],
       'template' => 'secure-embed',
       'path' => $path . '/templates',
     ],
+    'secure_embed_error' => [
+      'variables' => [
+        'message' => '',
+      ],
+      'template' => 'secure-embed-error',
+      'path' => $path . '/templates',
+    ],
     'secure_embed_placeholder' => [
       'variables' => [
-        'embed_data' => [],
+        'label' => '',
       ],
       'template' => 'secure-embed-placeholder',
       'path' => $path . '/templates',
@@ -66,45 +70,11 @@ function secure_embed_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Implements hook_library_info_build().
+ * Implements hook_config_schema_info_alter().
  */
-function secure_embed_library_info_build() {
-  $libraries = [];
-
-  $libraries['secure_embed'] = [
-    'version' => '1.x',
-    'css' => [
-      'component' => [
-        'css/secure-embed.css' => [],
-      ],
-    ],
-    'js' => [
-      'js/secure-embed.js' => [],
-    ],
-    'dependencies' => [
-      'core/drupal',
-      'core/once',
-    ],
-  ];
-
-  $libraries['secure_embed.dialog'] = [
-    'version' => '1.x',
-    'css' => [
-      'component' => [
-        'css/secure-embed-dialog.css' => [],
-      ],
-    ],
-    'js' => [
-      'js/secure-embed-dialog.js' => [],
-    ],
-    'dependencies' => [
-      'core/drupal',
-      'core/drupal.dialog.ajax',
-      'core/jquery',
-    ],
-  ];
-
-  return $libraries;
+function secure_embed_cache_flush() {
+  // Clear domain pattern cache when caches are flushed.
+  \Drupal::service('secure_embed.manager')->clearCache();
 }
 
 /**
@@ -115,48 +85,12 @@ function secure_embed_library_info_build() {
  *
  * @return bool
  *   TRUE if the URL is from an allowed domain, FALSE otherwise.
+ *
+ * @deprecated in secure_embed:2.0.0 and is removed from secure_embed:3.0.0.
+ *   Use \Drupal::service('secure_embed.manager')->validateUrl() instead.
  */
 function secure_embed_validate_url($url) {
-  $config = \Drupal::config('secure_embed.settings');
-  $allowed_domains = $config->get('allowed_domains') ?? [];
-
-  if (empty($allowed_domains)) {
-    return FALSE;
-  }
-
-  $parsed_url = parse_url($url);
-  if (!$parsed_url || empty($parsed_url['host'])) {
-    return FALSE;
-  }
-
-  $host = strtolower($parsed_url['host']);
-
-  foreach ($allowed_domains as $domain) {
-    $domain = strtolower(trim($domain));
-    if (empty($domain)) {
-      continue;
-    }
-
-    // Exact match.
-    if ($host === $domain) {
-      return TRUE;
-    }
-
-    // Wildcard subdomain match (e.g., *.youtube.com matches www.youtube.com).
-    if (strpos($domain, '*.') === 0) {
-      $base_domain = substr($domain, 2);
-      if ($host === $base_domain || str_ends_with($host, '.' . $base_domain)) {
-        return TRUE;
-      }
-    }
-
-    // Subdomain match (e.g., youtube.com matches www.youtube.com).
-    if (str_ends_with($host, '.' . $domain)) {
-      return TRUE;
-    }
-  }
-
-  return FALSE;
+  return \Drupal::service('secure_embed.manager')->validateUrl($url);
 }
 
 /**
@@ -167,62 +101,44 @@ function secure_embed_validate_url($url) {
  *
  * @return array
  *   Sanitized parameters.
+ *
+ * @deprecated in secure_embed:2.0.0 and is removed from secure_embed:3.0.0.
+ *   Use \Drupal::service('secure_embed.manager')->sanitizeParams() instead.
  */
 function secure_embed_sanitize_params(array $params) {
-  $sanitized = [];
+  return \Drupal::service('secure_embed.manager')->sanitizeParams($params);
+}
 
-  // URL - validate and sanitize.
-  if (!empty($params['url'])) {
-    $url = filter_var($params['url'], FILTER_SANITIZE_URL);
-    if (filter_var($url, FILTER_VALIDATE_URL)) {
-      $sanitized['url'] = $url;
-    }
-  }
+/**
+ * Encodes embed data for storage in content.
+ *
+ * @param array $data
+ *   The embed data.
+ *
+ * @return string
+ *   Signed, base64 encoded JSON string.
+ *
+ * @deprecated in secure_embed:2.0.0 and is removed from secure_embed:3.0.0.
+ *   Use \Drupal::service('secure_embed.manager')->encodeData() instead.
+ */
+function secure_embed_encode_data(array $data) {
+  return \Drupal::service('secure_embed.manager')->encodeData($data);
+}
 
-  // Width - numeric or percentage.
-  if (!empty($params['width'])) {
-    $width = $params['width'];
-    if (is_numeric($width) || preg_match('/^\d+(%|px|em|rem|vw)?$/', $width)) {
-      $sanitized['width'] = $width;
-    }
-  }
-
-  // Height - numeric or percentage.
-  if (!empty($params['height'])) {
-    $height = $params['height'];
-    if (is_numeric($height) || preg_match('/^\d+(%|px|em|rem|vh)?$/', $height)) {
-      $sanitized['height'] = $height;
-    }
-  }
-
-  // Title - plain text.
-  if (!empty($params['title'])) {
-    $sanitized['title'] = htmlspecialchars(strip_tags($params['title']), ENT_QUOTES, 'UTF-8');
-  }
-
-  // Aspect ratio - validate format.
-  if (!empty($params['aspect_ratio'])) {
-    if (preg_match('/^\d+:\d+$/', $params['aspect_ratio'])) {
-      $sanitized['aspect_ratio'] = $params['aspect_ratio'];
-    }
-  }
-
-  // Responsive - boolean.
-  $sanitized['responsive'] = !empty($params['responsive']);
-
-  // Loading - validate against allowed values.
-  $allowed_loading = ['lazy', 'eager', 'auto'];
-  if (!empty($params['loading']) && in_array($params['loading'], $allowed_loading)) {
-    $sanitized['loading'] = $params['loading'];
-  }
-
-  // Custom class - alphanumeric, hyphens, underscores only.
-  if (!empty($params['custom_class'])) {
-    $class = preg_replace('/[^a-zA-Z0-9\-_\s]/', '', $params['custom_class']);
-    $sanitized['custom_class'] = $class;
-  }
-
-  return $sanitized;
+/**
+ * Decodes embed data from content.
+ *
+ * @param string $encoded
+ *   Signed, base64 encoded JSON string.
+ *
+ * @return array|null
+ *   The decoded data or NULL on failure/invalid signature.
+ *
+ * @deprecated in secure_embed:2.0.0 and is removed from secure_embed:3.0.0.
+ *   Use \Drupal::service('secure_embed.manager')->decodeData() instead.
+ */
+function secure_embed_decode_data($encoded) {
+  return \Drupal::service('secure_embed.manager')->decodeData($encoded);
 }
 
 /**
@@ -240,6 +156,7 @@ function secure_embed_get_default_allow() {
     'gyroscope',
     'picture-in-picture',
     'web-share',
+    'fullscreen',
   ];
 }
 
@@ -259,37 +176,74 @@ function secure_embed_get_default_sandbox() {
 }
 
 /**
- * Encodes embed data for storage in content.
- *
- * @param array $data
- *   The embed data.
- *
- * @return string
- *   Base64 encoded JSON string.
+ * @addtogroup hooks
+ * @{
  */
-function secure_embed_encode_data(array $data) {
-  return base64_encode(json_encode($data));
+
+/**
+ * Alter the URL validation result.
+ *
+ * This hook allows modules to override the URL validation decision.
+ * Use with caution as this affects security.
+ *
+ * @param bool $is_valid
+ *   The current validation result. Modify to change the outcome.
+ * @param string $url
+ *   The URL being validated.
+ */
+function hook_secure_embed_validate_alter(&$is_valid, $url) {
+  // Example: Block a specific URL pattern even if domain is allowed.
+  if (strpos($url, '/blocked-path/') !== FALSE) {
+    $is_valid = FALSE;
+  }
+
+  // Example: Allow a specific URL that would otherwise be blocked.
+  if ($url === 'https://trusted-internal-site.example.com/embed') {
+    $is_valid = TRUE;
+  }
 }
 
 /**
- * Decodes embed data from content.
+ * Alter the sanitized embed parameters.
  *
- * @param string $encoded
- *   Base64 encoded JSON string.
+ * This hook allows modules to modify or add parameters after sanitization.
  *
- * @return array|null
- *   The decoded data or NULL on failure.
+ * @param array $sanitized
+ *   The sanitized parameters. Modify in place.
+ * @param array $original
+ *   The original unsanitized parameters for reference.
  */
-function secure_embed_decode_data($encoded) {
-  $json = base64_decode($encoded);
-  if ($json === FALSE) {
-    return NULL;
-  }
+function hook_secure_embed_params_alter(array &$sanitized, array $original) {
+  // Example: Force all embeds to use lazy loading.
+  $sanitized['lazy_loading'] = TRUE;
 
-  $data = json_decode($json, TRUE);
-  if (json_last_error() !== JSON_ERROR_NONE) {
-    return NULL;
+  // Example: Add a tracking parameter.
+  if (!empty($sanitized['url'])) {
+    $sanitized['url'] .= (strpos($sanitized['url'], '?') !== FALSE ? '&' : '?') . 'ref=drupal';
   }
-
-  return $data;
 }
+
+/**
+ * Alter the embed render array before rendering.
+ *
+ * This hook allows modules to modify the render array for embeds.
+ *
+ * @param array $build
+ *   The render array. Modify in place.
+ * @param array $embed_data
+ *   The embed data used to generate the render array.
+ */
+function hook_secure_embed_render_alter(array &$build, array $embed_data) {
+  // Example: Add a custom wrapper class.
+  $build['#wrapper_attributes']['class'][] = 'my-custom-embed-class';
+
+  // Example: Add custom cache tags.
+  $build['#cache']['tags'][] = 'my_module:embeds';
+
+  // Example: Add additional JavaScript.
+  $build['#attached']['library'][] = 'my_module/embed_tracking';
+}
+
+/**
+ * @} End of "addtogroup hooks".
+ */

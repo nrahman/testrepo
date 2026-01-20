@@ -4,29 +4,16 @@
  * Template for secure embed iframe wrapper.
  *
  * Available variables:
- * - url: The embed URL.
- * - title: The accessibility title.
+ * - wrapper_attributes: HTML attributes for the wrapper div.
+ * - iframe_attributes: HTML attributes for the iframe element.
  * - responsive: Boolean indicating responsive mode.
- * - aspect_ratio: The aspect ratio (e.g., '16:9').
- * - width: The width value.
- * - height: The height value.
- * - custom_class: Custom CSS class.
- * - lazy_loading: Boolean for lazy loading.
- * - sandbox_attrs: Sandbox attribute string.
- * - allow_attrs: Allow attribute string.
- * - attributes: HTML attributes for the wrapper.
- * - iframe_attributes: HTML attributes for the iframe.
+ *
+ * @see \Drupal\secure_embed\Service\SecureEmbedManager::buildRenderArray()
  */
 #}
-{%
-  set wrapper_classes = [
-    'secure-embed',
-    responsive ? 'secure-embed--responsive',
-    responsive ? 'secure-embed--ratio-' ~ aspect_ratio|replace({':': '-'}),
-    custom_class ?: null,
-  ]
-%}
+{% set wrapper_attrs = create_attribute(wrapper_attributes) %}
+{% set iframe_attrs = create_attribute(iframe_attributes) %}
 
-<div{{ attributes.addClass(wrapper_classes) }}{% if not responsive %} style="width: {{ width }};"{% endif %}>
-  <iframe{{ iframe_attributes }}></iframe>
+<div{{ wrapper_attrs }}>
+  <iframe{{ iframe_attrs }}></iframe>
 </div>

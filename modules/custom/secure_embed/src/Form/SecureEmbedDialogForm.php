@@ -8,6 +8,7 @@ use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\editor\Ajax\EditorDialogSave;
+use Drupal\secure_embed\Service\SecureEmbedManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -16,18 +17,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SecureEmbedDialogForm extends FormBase {
 
   /**
-   * The config factory.
+   * The secure embed manager.
    *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   * @var \Drupal\secure_embed\Service\SecureEmbedManager
    */
-  protected $configFactory;
+  protected $embedManager;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     $instance = parent::create($container);
-    $instance->configFactory = $container->get('config.factory');
+    $instance->embedManager = $container->get('secure_embed.manager');
     return $instance;
   }
 
@@ -42,7 +43,7 @@ class SecureEmbedDialogForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->configFactory->get('secure_embed.settings');
+    $config = $this->embedManager->getConfig();
 
     // Get existing embed data if editing.
     $embed_data = $form_state->get('embed_data') ?? [];
@@ -64,14 +65,14 @@ class SecureEmbedDialogForm extends FormBase {
       '#title' => $this->t('Embed URL'),
       '#required' => TRUE,
       '#default_value' => $embed_data['url'] ?? '',
-      '#description' => $this->t('Enter the URL to embed (e.g., YouTube video URL, Google Map URL).'),
+      '#description' => $this->t('Enter the HTTPS URL to embed (e.g., YouTube video URL, Google Map URL).'),
       '#attributes' => [
         'placeholder' => 'https://www.youtube.com/embed/VIDEO_ID',
       ],
     ];
 
     // Show allowed domains.
-    $allowed_domains = $config->get('allowed_domains') ?? [];
+    $allowed_domains = $this->embedManager->getAllowedDomainsList();
     if (!empty($allowed_domains)) {
       $domains_display = array_slice($allowed_domains, 0, 10);
       $more = count($allowed_domains) > 10 ? $this->t('... and @count more', ['@count' => count($allowed_domains) - 10]) : '';
@@ -92,6 +93,7 @@ class SecureEmbedDialogForm extends FormBase {
       '#title' => $this->t('Title (Accessibility)'),
       '#default_value' => $embed_data['title'] ?? '',
       '#description' => $this->t('Descriptive title for accessibility (screen readers).'),
+      '#maxlength' => 255,
       '#attributes' => [
         'placeholder' => 'Video: How to use our product',
       ],
@@ -160,6 +162,7 @@ class SecureEmbedDialogForm extends FormBase {
       '#title' => $this->t('Custom CSS Class'),
       '#default_value' => $embed_data['custom_class'] ?? '',
       '#description' => $this->t('Optional CSS class for custom styling.'),
+      '#maxlength' => 128,
       '#attributes' => [
         'placeholder' => 'my-custom-embed',
       ],
@@ -218,31 +221,27 @@ class SecureEmbedDialogForm extends FormBase {
       return;
     }
 
-    // Validate against whitelist.
-    if (!secure_embed_validate_url($url)) {
-      $config = $this->configFactory->get('secure_embed.settings');
-      $allowed_domains = $config->get('allowed_domains') ?? [];
+    // Check for HTTPS.
+    $parsed = parse_url($url);
+    if (empty($parsed['scheme']) || strtolower($parsed['scheme']) !== 'https') {
+      $form_state->setErrorByName('url', $this->t('Only HTTPS URLs are allowed for security.'));
+      return;
+    }
+
+    // Validate against whitelist using the service.
+    if (!$this->embedManager->validateUrl($url)) {
+      $allowed_domains = $this->embedManager->getAllowedDomainsList();
       $form_state->setErrorByName('url', $this->t('This domain is not allowed. Allowed domains: @domains', [
         '@domains' => implode(', ', array_slice($allowed_domains, 0, 5)) . (count($allowed_domains) > 5 ? '...' : ''),
       ]));
       return;
     }
 
-    // Validate width/height if not responsive.
-    $display = $form_state->getValue('display');
-    if (empty($display['responsive'])) {
-      if (!preg_match('/^\d+(%|px|em|rem|vw)?$/', $display['width'])) {
-        $form_state->setErrorByName('display][width', $this->t('Invalid width format.'));
-      }
-      if (!preg_match('/^\d+(%|px|em|rem|vh)?$/', $display['height'])) {
-        $form_state->setErrorByName('display][height', $this->t('Invalid height format.'));
-      }
-    }
-
     // Validate custom class (alphanumeric, hyphens, underscores only).
+    $display = $form_state->getValue('display');
     $custom_class = $display['custom_class'] ?? '';
     if (!empty($custom_class) && !preg_match('/^[a-zA-Z0-9\-_\s]+$/', $custom_class)) {
-      $form_state->setErrorByName('display][custom_class', $this->t('Custom class can only contain letters, numbers, hyphens, and underscores.'));
+      $form_state->setErrorByName('display][custom_class', $this->t('Custom class can only contain letters, numbers, hyphens, underscores, and spaces.'));
     }
   }
 
@@ -287,15 +286,18 @@ class SecureEmbedDialogForm extends FormBase {
       'lazy_loading' => !empty($advanced['lazy_loading']),
     ];
 
-    // Sanitize the data.
-    $embed_data = secure_embed_sanitize_params($embed_data);
+    // Sanitize the data using the service.
+    $embed_data = $this->embedManager->sanitizeParams($embed_data);
 
-    // Encode for storage.
-    $encoded_data = secure_embed_encode_data($embed_data);
+    // Encode with HMAC signature using the service.
+    $encoded_data = $this->embedManager->encodeData($embed_data);
+
+    // Build display label.
+    $label = $embed_data['title'] ?: parse_url($embed_data['url'], PHP_URL_HOST);
 
     // Create the embed token for CKEditor.
-    $embed_token = '<div class="secure-embed-token" data-secure-embed="' . $encoded_data . '">';
-    $embed_token .= '[Secure Embed: ' . htmlspecialchars($embed_data['title'] ?: parse_url($embed_data['url'], PHP_URL_HOST)) . ']';
+    $embed_token = '<div class="secure-embed-token" data-secure-embed="' . htmlspecialchars($encoded_data, ENT_QUOTES, 'UTF-8') . '">';
+    $embed_token .= '[Secure Embed: ' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . ']';
     $embed_token .= '</div>';
 
     // Return values to CKEditor.
