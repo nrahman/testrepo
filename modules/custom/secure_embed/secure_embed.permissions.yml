@@ -1,0 +1,8 @@
+administer secure embed settings:
+  title: 'Administer Secure Embed settings'
+  description: 'Configure allowed domains and default settings for secure embeds.'
+  restrict access: true
+
+use secure embed:
+  title: 'Use Secure Embed'
+  description: 'Insert secure embeds into content using the CKEditor button.'

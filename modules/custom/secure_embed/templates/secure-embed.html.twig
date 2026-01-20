@@ -1,0 +1,32 @@
+{#
+/**
+ * @file
+ * Template for secure embed iframe wrapper.
+ *
+ * Available variables:
+ * - url: The embed URL.
+ * - title: The accessibility title.
+ * - responsive: Boolean indicating responsive mode.
+ * - aspect_ratio: The aspect ratio (e.g., '16:9').
+ * - width: The width value.
+ * - height: The height value.
+ * - custom_class: Custom CSS class.
+ * - lazy_loading: Boolean for lazy loading.
+ * - sandbox_attrs: Sandbox attribute string.
+ * - allow_attrs: Allow attribute string.
+ * - attributes: HTML attributes for the wrapper.
+ * - iframe_attributes: HTML attributes for the iframe.
+ */
+#}
+{%
+  set wrapper_classes = [
+    'secure-embed',
+    responsive ? 'secure-embed--responsive',
+    responsive ? 'secure-embed--ratio-' ~ aspect_ratio|replace({':': '-'}),
+    custom_class ?: null,
+  ]
+%}
+
+<div{{ attributes.addClass(wrapper_classes) }}{% if not responsive %} style="width: {{ width }};"{% endif %}>
+  <iframe{{ iframe_attributes }}></iframe>
+</div>

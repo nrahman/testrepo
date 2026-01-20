@@ -1,0 +1,11 @@
+name: 'Secure Embed'
+type: module
+description: 'Provides a secure way to embed external content (iframes) via CKEditor with domain whitelisting and sanitized parameters.'
+package: Custom
+core_version_requirement: ^9 || ^10 || ^11
+dependencies:
+  - drupal:filter
+  - drupal:ckeditor5
+configure: secure_embed.settings
+
+php: 8.1

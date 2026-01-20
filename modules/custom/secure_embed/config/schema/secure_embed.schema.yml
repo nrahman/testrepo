@@ -1,0 +1,48 @@
+secure_embed.settings:
+  type: config_object
+  label: 'Secure Embed settings'
+  mapping:
+    allowed_domains:
+      type: sequence
+      label: 'Allowed domains'
+      sequence:
+        type: string
+        label: 'Domain'
+    default_width:
+      type: string
+      label: 'Default width'
+    default_height:
+      type: string
+      label: 'Default height'
+    default_aspect_ratio:
+      type: string
+      label: 'Default aspect ratio'
+    responsive_default:
+      type: boolean
+      label: 'Responsive by default'
+    lazy_loading_default:
+      type: boolean
+      label: 'Lazy loading by default'
+    enable_sandbox:
+      type: boolean
+      label: 'Enable sandbox'
+    sandbox_attributes:
+      type: sequence
+      label: 'Sandbox attributes'
+      sequence:
+        type: string
+        label: 'Attribute'
+    allow_attributes:
+      type: sequence
+      label: 'Allow attributes'
+      sequence:
+        type: string
+        label: 'Attribute'
+
+filter_settings.secure_embed_filter:
+  type: filter
+  label: 'Secure Embed filter'
+  mapping:
+    process_embeds:
+      type: boolean
+      label: 'Process embeds'

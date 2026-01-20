@@ -1,0 +1,14 @@
+secure_embed_secureEmbed:
+  ckeditor5:
+    plugins:
+      - secureEmbed.SecureEmbed
+    config: {}
+  drupal:
+    label: Secure Embed
+    library: secure_embed/ckeditor5.secureEmbed
+    admin_library: secure_embed/admin
+    toolbar_items:
+      secureEmbed:
+        label: Secure Embed
+    elements:
+      - <div class="secure-embed-token" data-secure-embed>

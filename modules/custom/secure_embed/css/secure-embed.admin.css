@@ -1,0 +1,45 @@
+/**
+ * @file
+ * Secure Embed admin styles.
+ */
+
+/* Settings form */
+.secure-embed-settings .form-textarea {
+  font-family: monospace;
+  font-size: 0.875rem;
+}
+
+.secure-embed-settings .description {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* Domain validation feedback */
+.secure-embed-settings .form-item--error input,
+.secure-embed-settings .form-item--error textarea {
+  border-color: #dc2626;
+}
+
+/* Checkbox groups */
+.secure-embed-settings .form-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.5rem;
+}
+
+.secure-embed-settings .form-checkboxes .form-item {
+  margin: 0;
+}
+
+/* Security warning */
+.secure-embed-security-warning {
+  padding: 1rem;
+  background-color: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.secure-embed-security-warning strong {
+  color: #b45309;
+}

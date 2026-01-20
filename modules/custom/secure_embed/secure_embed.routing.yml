@@ -1,0 +1,17 @@
+secure_embed.settings:
+  path: '/admin/config/content/secure-embed'
+  defaults:
+    _form: '\Drupal\secure_embed\Form\SecureEmbedSettingsForm'
+    _title: 'Secure Embed Settings'
+  requirements:
+    _permission: 'administer secure embed settings'
+
+secure_embed.dialog:
+  path: '/secure-embed/dialog'
+  defaults:
+    _form: '\Drupal\secure_embed\Form\SecureEmbedDialogForm'
+    _title: 'Insert Secure Embed'
+  requirements:
+    _permission: 'use secure embed'
+  options:
+    _admin_route: TRUE

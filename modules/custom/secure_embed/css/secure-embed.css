@@ -1,0 +1,124 @@
+/**
+ * @file
+ * Secure Embed frontend styles.
+ */
+
+/* CSS Custom Properties */
+:root {
+  --secure-embed-bg: #000;
+  --secure-embed-border-radius: 8px;
+  --secure-embed-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Base wrapper styles */
+.secure-embed {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--secure-embed-border-radius);
+  box-shadow: var(--secure-embed-shadow);
+  background-color: var(--secure-embed-bg);
+}
+
+.secure-embed iframe {
+  display: block;
+  border: 0;
+}
+
+/* Responsive wrapper */
+.secure-embed--responsive {
+  width: 100%;
+  height: 0;
+}
+
+.secure-embed--responsive iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Aspect ratio modifiers */
+.secure-embed--ratio-16-9 {
+  padding-bottom: 56.25%;
+}
+
+.secure-embed--ratio-4-3 {
+  padding-bottom: 75%;
+}
+
+.secure-embed--ratio-1-1 {
+  padding-bottom: 100%;
+}
+
+.secure-embed--ratio-21-9 {
+  padding-bottom: 42.857%;
+}
+
+.secure-embed--ratio-9-16 {
+  padding-bottom: 177.778%;
+}
+
+/* Non-responsive (fixed dimensions) */
+.secure-embed:not(.secure-embed--responsive) iframe {
+  width: 100%;
+}
+
+/* Loading state */
+.secure-embed--loading {
+  min-height: 200px;
+}
+
+.secure-embed--loading::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: secure-embed-spin 1s linear infinite;
+}
+
+@keyframes secure-embed-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error state */
+.secure-embed-error {
+  padding: 2rem;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--secure-embed-border-radius);
+  color: #dc2626;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .secure-embed--loading::before {
+    animation: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .secure-embed {
+    display: none;
+  }
+
+  .secure-embed::after {
+    content: '[Embedded content not available in print]';
+    display: block;
+    padding: 1rem;
+    background-color: #f3f4f6;
+    text-align: center;
+  }
+}

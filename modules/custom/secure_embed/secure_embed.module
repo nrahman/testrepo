@@ -1,0 +1,295 @@
+<?php
+
+/**
+ * @file
+ * Secure Embed module file.
+ *
+ * Provides a secure way to embed external content via CKEditor
+ * with domain whitelisting and sanitized parameters.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function secure_embed_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.secure_embed':
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The Secure Embed module provides a secure method for embedding external content (like YouTube videos, maps, or other iframes) into your content.') . '</p>';
+      $output .= '<h3>' . t('Security Features') . '</h3>';
+      $output .= '<ul>';
+      $output .= '<li>' . t('<strong>Domain Whitelisting:</strong> Only URLs from approved domains can be embedded.') . '</li>';
+      $output .= '<li>' . t('<strong>Parameter Sanitization:</strong> All embed parameters are sanitized before rendering.') . '</li>';
+      $output .= '<li>' . t('<strong>No Raw HTML:</strong> Users never enter raw iframe code directly.') . '</li>';
+      $output .= '<li>' . t('<strong>CSP Compatible:</strong> Embeds use secure sandbox attributes.') . '</li>';
+      $output .= '</ul>';
+      $output .= '<h3>' . t('Usage') . '</h3>';
+      $output .= '<p>' . t('Click the "Secure Embed" button in CKEditor to insert an embed. Enter the URL and configure display options.') . '</p>';
+      return $output;
+
+    case 'secure_embed.settings':
+      return '<p>' . t('Configure the allowed domains and default settings for secure embeds.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function secure_embed_theme($existing, $type, $theme, $path) {
+  return [
+    'secure_embed' => [
+      'variables' => [
+        'url' => NULL,
+        'width' => '100%',
+        'height' => '400',
+        'title' => '',
+        'aspect_ratio' => '16:9',
+        'allow' => [],
+        'sandbox' => [],
+        'loading' => 'lazy',
+        'responsive' => TRUE,
+        'custom_class' => '',
+      ],
+      'template' => 'secure-embed',
+      'path' => $path . '/templates',
+    ],
+    'secure_embed_placeholder' => [
+      'variables' => [
+        'embed_data' => [],
+      ],
+      'template' => 'secure-embed-placeholder',
+      'path' => $path . '/templates',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_library_info_build().
+ */
+function secure_embed_library_info_build() {
+  $libraries = [];
+
+  $libraries['secure_embed'] = [
+    'version' => '1.x',
+    'css' => [
+      'component' => [
+        'css/secure-embed.css' => [],
+      ],
+    ],
+    'js' => [
+      'js/secure-embed.js' => [],
+    ],
+    'dependencies' => [
+      'core/drupal',
+      'core/once',
+    ],
+  ];
+
+  $libraries['secure_embed.dialog'] = [
+    'version' => '1.x',
+    'css' => [
+      'component' => [
+        'css/secure-embed-dialog.css' => [],
+      ],
+    ],
+    'js' => [
+      'js/secure-embed-dialog.js' => [],
+    ],
+    'dependencies' => [
+      'core/drupal',
+      'core/drupal.dialog.ajax',
+      'core/jquery',
+    ],
+  ];
+
+  return $libraries;
+}
+
+/**
+ * Validates a URL against the whitelist.
+ *
+ * @param string $url
+ *   The URL to validate.
+ *
+ * @return bool
+ *   TRUE if the URL is from an allowed domain, FALSE otherwise.
+ */
+function secure_embed_validate_url($url) {
+  $config = \Drupal::config('secure_embed.settings');
+  $allowed_domains = $config->get('allowed_domains') ?? [];
+
+  if (empty($allowed_domains)) {
+    return FALSE;
+  }
+
+  $parsed_url = parse_url($url);
+  if (!$parsed_url || empty($parsed_url['host'])) {
+    return FALSE;
+  }
+
+  $host = strtolower($parsed_url['host']);
+
+  foreach ($allowed_domains as $domain) {
+    $domain = strtolower(trim($domain));
+    if (empty($domain)) {
+      continue;
+    }
+
+    // Exact match.
+    if ($host === $domain) {
+      return TRUE;
+    }
+
+    // Wildcard subdomain match (e.g., *.youtube.com matches www.youtube.com).
+    if (strpos($domain, '*.') === 0) {
+      $base_domain = substr($domain, 2);
+      if ($host === $base_domain || str_ends_with($host, '.' . $base_domain)) {
+        return TRUE;
+      }
+    }
+
+    // Subdomain match (e.g., youtube.com matches www.youtube.com).
+    if (str_ends_with($host, '.' . $domain)) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
+/**
+ * Sanitizes embed parameters.
+ *
+ * @param array $params
+ *   The raw parameters.
+ *
+ * @return array
+ *   Sanitized parameters.
+ */
+function secure_embed_sanitize_params(array $params) {
+  $sanitized = [];
+
+  // URL - validate and sanitize.
+  if (!empty($params['url'])) {
+    $url = filter_var($params['url'], FILTER_SANITIZE_URL);
+    if (filter_var($url, FILTER_VALIDATE_URL)) {
+      $sanitized['url'] = $url;
+    }
+  }
+
+  // Width - numeric or percentage.
+  if (!empty($params['width'])) {
+    $width = $params['width'];
+    if (is_numeric($width) || preg_match('/^\d+(%|px|em|rem|vw)?$/', $width)) {
+      $sanitized['width'] = $width;
+    }
+  }
+
+  // Height - numeric or percentage.
+  if (!empty($params['height'])) {
+    $height = $params['height'];
+    if (is_numeric($height) || preg_match('/^\d+(%|px|em|rem|vh)?$/', $height)) {
+      $sanitized['height'] = $height;
+    }
+  }
+
+  // Title - plain text.
+  if (!empty($params['title'])) {
+    $sanitized['title'] = htmlspecialchars(strip_tags($params['title']), ENT_QUOTES, 'UTF-8');
+  }
+
+  // Aspect ratio - validate format.
+  if (!empty($params['aspect_ratio'])) {
+    if (preg_match('/^\d+:\d+$/', $params['aspect_ratio'])) {
+      $sanitized['aspect_ratio'] = $params['aspect_ratio'];
+    }
+  }
+
+  // Responsive - boolean.
+  $sanitized['responsive'] = !empty($params['responsive']);
+
+  // Loading - validate against allowed values.
+  $allowed_loading = ['lazy', 'eager', 'auto'];
+  if (!empty($params['loading']) && in_array($params['loading'], $allowed_loading)) {
+    $sanitized['loading'] = $params['loading'];
+  }
+
+  // Custom class - alphanumeric, hyphens, underscores only.
+  if (!empty($params['custom_class'])) {
+    $class = preg_replace('/[^a-zA-Z0-9\-_\s]/', '', $params['custom_class']);
+    $sanitized['custom_class'] = $class;
+  }
+
+  return $sanitized;
+}
+
+/**
+ * Gets the default allowed iframe permissions.
+ *
+ * @return array
+ *   Array of allowed permissions.
+ */
+function secure_embed_get_default_allow() {
+  return [
+    'accelerometer',
+    'autoplay',
+    'clipboard-write',
+    'encrypted-media',
+    'gyroscope',
+    'picture-in-picture',
+    'web-share',
+  ];
+}
+
+/**
+ * Gets the default sandbox attributes.
+ *
+ * @return array
+ *   Array of sandbox attributes.
+ */
+function secure_embed_get_default_sandbox() {
+  return [
+    'allow-scripts',
+    'allow-same-origin',
+    'allow-popups',
+    'allow-presentation',
+  ];
+}
+
+/**
+ * Encodes embed data for storage in content.
+ *
+ * @param array $data
+ *   The embed data.
+ *
+ * @return string
+ *   Base64 encoded JSON string.
+ */
+function secure_embed_encode_data(array $data) {
+  return base64_encode(json_encode($data));
+}
+
+/**
+ * Decodes embed data from content.
+ *
+ * @param string $encoded
+ *   Base64 encoded JSON string.
+ *
+ * @return array|null
+ *   The decoded data or NULL on failure.
+ */
+function secure_embed_decode_data($encoded) {
+  $json = base64_decode($encoded);
+  if ($json === FALSE) {
+    return NULL;
+  }
+
+  $data = json_decode($json, TRUE);
+  if (json_last_error() !== JSON_ERROR_NONE) {
+    return NULL;
+  }
+
+  return $data;
+}

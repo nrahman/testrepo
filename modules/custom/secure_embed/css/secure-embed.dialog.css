@@ -1,0 +1,140 @@
+/**
+ * @file
+ * Secure Embed dialog styles.
+ */
+
+#secure-embed-dialog-form {
+  max-width: 500px;
+}
+
+#secure-embed-dialog-form .form-item {
+  margin-bottom: 1rem;
+}
+
+#secure-embed-dialog-form .form-item label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+#secure-embed-dialog-form .form-url,
+#secure-embed-dialog-form .form-text {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+#secure-embed-dialog-form .form-url:focus,
+#secure-embed-dialog-form .form-text:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+#secure-embed-dialog-form .description {
+  margin-top: 0.25rem;
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+/* Details elements */
+#secure-embed-dialog-form details {
+  margin-bottom: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+#secure-embed-dialog-form details summary {
+  padding: 0.75rem 1rem;
+  background-color: #f9fafb;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+#secure-embed-dialog-form details[open] summary {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+#secure-embed-dialog-form details > .form-item {
+  padding: 1rem;
+  margin: 0;
+}
+
+/* Allowed domains info */
+.secure-embed-allowed-domains small {
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+/* Form actions */
+#secure-embed-dialog-form .form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+#secure-embed-dialog-form .button {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+#secure-embed-dialog-form .button--primary {
+  background-color: #2563eb;
+  border: 1px solid #2563eb;
+  color: #fff;
+}
+
+#secure-embed-dialog-form .button--primary:hover {
+  background-color: #1d4ed8;
+}
+
+#secure-embed-dialog-form .button:not(.button--primary) {
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+}
+
+#secure-embed-dialog-form .button:not(.button--primary):hover {
+  background-color: #f9fafb;
+}
+
+/* Error messages */
+#secure-embed-messages {
+  margin-bottom: 1rem;
+}
+
+#secure-embed-messages .messages--error {
+  padding: 0.75rem 1rem;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 4px;
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
+/* Select styling */
+#secure-embed-dialog-form .form-select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  background-color: #fff;
+}
+
+/* Checkbox styling */
+#secure-embed-dialog-form .form-checkbox {
+  width: auto;
+  margin-right: 0.5rem;
+}
+
+#secure-embed-dialog-form .form-type-checkbox label {
+  display: inline;
+  font-weight: normal;
+}
